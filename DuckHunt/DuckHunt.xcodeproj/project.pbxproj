@@ -1,0 +1,255 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		81E890D41718427A005B5490 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 81E890D31718427A005B5490 /* main.mm */; };
+		81E890D61718427A005B5490 /* DuckHunt.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 81E890D51718427A005B5490 /* DuckHunt.1 */; };
+		81E890DE171842A3005B5490 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E890DD1718429F005B5490 /* SDLMain.m */; };
+		81E890E0171842AD005B5490 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E890DF171842AD005B5490 /* Cocoa.framework */; };
+		81E890E2171842B7005B5490 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E890E1171842B7005B5490 /* Foundation.framework */; };
+		81E890E4171842D2005B5490 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E890E3171842D2005B5490 /* SDL.framework */; };
+		81E890E7171842E7005B5490 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E890E5171842E7005B5490 /* SDL_image.framework */; };
+		81E890E8171842E7005B5490 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E890E6171842E7005B5490 /* SDL_ttf.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		81E890CE1718427A005B5490 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				81E890D61718427A005B5490 /* DuckHunt.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		81E890D01718427A005B5490 /* DuckHunt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DuckHunt; sourceTree = BUILT_PRODUCTS_DIR; };
+		81E890D31718427A005B5490 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		81E890D51718427A005B5490 /* DuckHunt.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = DuckHunt.1; sourceTree = "<group>"; };
+		81E890DC1718429F005B5490 /* SDLMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
+		81E890DD1718429F005B5490 /* SDLMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
+		81E890DF171842AD005B5490 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		81E890E1171842B7005B5490 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		81E890E3171842D2005B5490 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../SDL/SDL.framework; sourceTree = "<group>"; };
+		81E890E5171842E7005B5490 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = ../../SDL/SDL_image.framework; sourceTree = "<group>"; };
+		81E890E6171842E7005B5490 /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = ../../SDL/SDL_ttf.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		81E890CD1718427A005B5490 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81E890E7171842E7005B5490 /* SDL_image.framework in Frameworks */,
+				81E890E8171842E7005B5490 /* SDL_ttf.framework in Frameworks */,
+				81E890E4171842D2005B5490 /* SDL.framework in Frameworks */,
+				81E890E2171842B7005B5490 /* Foundation.framework in Frameworks */,
+				81E890E0171842AD005B5490 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		81E890C71718427A005B5490 = {
+			isa = PBXGroup;
+			children = (
+				81E890E5171842E7005B5490 /* SDL_image.framework */,
+				81E890E6171842E7005B5490 /* SDL_ttf.framework */,
+				81E890E3171842D2005B5490 /* SDL.framework */,
+				81E890E1171842B7005B5490 /* Foundation.framework */,
+				81E890DF171842AD005B5490 /* Cocoa.framework */,
+				81E890D21718427A005B5490 /* DuckHunt */,
+				81E890D11718427A005B5490 /* Products */,
+				81E890DC1718429F005B5490 /* SDLMain.h */,
+				81E890DD1718429F005B5490 /* SDLMain.m */,
+			);
+			sourceTree = "<group>";
+		};
+		81E890D11718427A005B5490 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				81E890D01718427A005B5490 /* DuckHunt */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		81E890D21718427A005B5490 /* DuckHunt */ = {
+			isa = PBXGroup;
+			children = (
+				81E890D31718427A005B5490 /* main.mm */,
+				81E890D51718427A005B5490 /* DuckHunt.1 */,
+			);
+			path = DuckHunt;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		81E890CF1718427A005B5490 /* DuckHunt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81E890D91718427A005B5490 /* Build configuration list for PBXNativeTarget "DuckHunt" */;
+			buildPhases = (
+				81E890CC1718427A005B5490 /* Sources */,
+				81E890CD1718427A005B5490 /* Frameworks */,
+				81E890CE1718427A005B5490 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DuckHunt;
+			productName = DuckHunt;
+			productReference = 81E890D01718427A005B5490 /* DuckHunt */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		81E890C81718427A005B5490 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Jeet Mehta";
+			};
+			buildConfigurationList = 81E890CB1718427A005B5490 /* Build configuration list for PBXProject "DuckHunt" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 81E890C71718427A005B5490;
+			productRefGroup = 81E890D11718427A005B5490 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				81E890CF1718427A005B5490 /* DuckHunt */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		81E890CC1718427A005B5490 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81E890DE171842A3005B5490 /* SDLMain.m in Sources */,
+				81E890D41718427A005B5490 /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		81E890D71718427A005B5490 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		81E890D81718427A005B5490 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		81E890DA1718427A005B5490 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../SDL\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		81E890DB1718427A005B5490 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../SDL\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		81E890CB1718427A005B5490 /* Build configuration list for PBXProject "DuckHunt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81E890D71718427A005B5490 /* Debug */,
+				81E890D81718427A005B5490 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81E890D91718427A005B5490 /* Build configuration list for PBXNativeTarget "DuckHunt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81E890DA1718427A005B5490 /* Debug */,
+				81E890DB1718427A005B5490 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 81E890C81718427A005B5490 /* Project object */;
+}
