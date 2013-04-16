@@ -10,8 +10,8 @@
 #include <SDL_mixer/SDL_mixer.h>
 
 //Screen Size
-const int screenHeight = 480;
-const int screenWidth = 640;
+const int screenHeight = 240;
+const int screenWidth = 256;
 const int screenBpp = 32;
 
 //Declaring the basic required surfaces/images
@@ -23,6 +23,9 @@ SDL_Color textColor;
 
 //Event Declaration
 SDL_Event event;
+
+//Sprite Clipping Rect
+SDL_Rect clip[1];
 
 //Initialization function - initializes all necessary subsystems and makes them available for use
 bool init()
@@ -85,19 +88,21 @@ SDL_Surface* loadImage (std::string filename, bool needColorKey, int red, int gr
 //Function which loads all necessary files
 bool loadFiles()
 {
+    background = loadImage("generalrips.gif", false, 0, 0, 0);
     return true;
 }
 
 //Function that applies the specified source surface onto the destination surface
-bool applyImages(int x, int y, SDL_Surface* source, SDL_Surface* dest)
+bool applyImages(int x, int y, SDL_Surface* source, SDL_Surface* dest, SDL_Rect* clip = NULL)
 {
     SDL_Rect offset;
     
     offset.x = x;
     offset.y = y;
     
-    if (SDL_BlitSurface(source, NULL, dest, &offset) == -1)
+    if (SDL_BlitSurface(source, clip, dest, &offset) == -1)
     {
+        std::cout << "Problem in blitting";
         return false;
     }
     
@@ -107,7 +112,7 @@ bool applyImages(int x, int y, SDL_Surface* source, SDL_Surface* dest)
 //Quits all necessary subsytems and frees all used surfaces/music
 void quitProgram()
 {
-    SDL_FreeSurface(screen);
+    SDL_FreeSurface(background);
     
     SDL_Quit();
     
@@ -131,6 +136,21 @@ int main(int argc, char** argv)
         return -1;
     }
     
+    loadFiles();
+    
+    clip[0].x = 0;
+    clip[0].y = 0;
+    clip[0].w = 256;
+    clip[0].h = 240;
+    
+    SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+    
+    if (applyImages(0, 0, background, screen, &clip[0]) == false)
+    {
+        return -1;
+    }
+    
+    SDL_Flip(screen);
     while (quit == false)
     {
         while (SDL_PollEvent(&event))
