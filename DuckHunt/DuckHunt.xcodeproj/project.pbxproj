@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81BD7A43171D9A950088B3C9 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BD7A42171D9A950088B3C9 /* SDL_mixer.framework */; };
 		81E890D41718427A005B5490 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 81E890D31718427A005B5490 /* main.mm */; };
 		81E890D61718427A005B5490 /* DuckHunt.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 81E890D51718427A005B5490 /* DuckHunt.1 */; };
 		81E890DE171842A3005B5490 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E890DD1718429F005B5490 /* SDLMain.m */; };
@@ -31,6 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		81BD7A42171D9A950088B3C9 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = ../../SDL/SDL_mixer.framework; sourceTree = "<group>"; };
 		81E890D01718427A005B5490 /* DuckHunt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DuckHunt; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E890D31718427A005B5490 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		81E890D51718427A005B5490 /* DuckHunt.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = DuckHunt.1; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81BD7A43171D9A950088B3C9 /* SDL_mixer.framework in Frameworks */,
 				81E890E7171842E7005B5490 /* SDL_image.framework in Frameworks */,
 				81E890E8171842E7005B5490 /* SDL_ttf.framework in Frameworks */,
 				81E890E4171842D2005B5490 /* SDL.framework in Frameworks */,
@@ -62,6 +65,7 @@
 		81E890C71718427A005B5490 = {
 			isa = PBXGroup;
 			children = (
+				81BD7A42171D9A950088B3C9 /* SDL_mixer.framework */,
 				81E890E5171842E7005B5490 /* SDL_image.framework */,
 				81E890E6171842E7005B5490 /* SDL_ttf.framework */,
 				81E890E3171842D2005B5490 /* SDL.framework */,
@@ -248,6 +252,7 @@
 				81E890DB1718427A005B5490 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
