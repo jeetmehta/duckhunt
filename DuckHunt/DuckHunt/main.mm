@@ -17,6 +17,12 @@ const int screenBpp = 32;
 //Declaring the basic required surfaces/images
 SDL_Surface* screen = NULL;
 SDL_Surface* background = NULL;
+SDL_Surface* dogOpening1 = NULL;
+SDL_Surface* dogOpening2 = NULL;
+SDL_Surface* dogOpening3 = NULL;
+SDL_Surface* dogOpening4 = NULL;
+SDL_Surface* dogOpening5 = NULL;
+SDL_Surface* dogOpening6 = NULL;
 
 //Text Color
 SDL_Color textColor;
@@ -25,7 +31,7 @@ SDL_Color textColor;
 SDL_Event event;
 
 //Sprite Clipping Rect
-SDL_Rect clip[1];
+SDL_Rect clip[10];
 
 //Initialization function - initializes all necessary subsystems and makes them available for use
 bool init()
@@ -89,6 +95,13 @@ SDL_Surface* loadImage (std::string filename, bool needColorKey, int red, int gr
 bool loadFiles()
 {
     background = loadImage("generalrips.gif", false, 0, 0, 0);
+    dogOpening1 = loadImage("generalrips.gif", true, 163, 239, 165);
+    dogOpening2 = loadImage("generalrips.gif", true, 163, 239, 165);
+    dogOpening3 = loadImage("generalrips.gif", true, 163, 239, 165);
+    dogOpening4 = loadImage("generalrips.gif", true, 163, 239, 165);
+    dogOpening5 = loadImage("generalrips.gif", true, 163, 239, 165);
+    dogOpening6 = loadImage("generalrips.gif", true, 163, 239, 165);
+    
     return true;
 }
 
@@ -121,6 +134,69 @@ void quitProgram()
     Mix_CloseAudio();
 }
 
+void setClips()
+{
+    //Background
+    clip[0].x = 0;
+    clip[0].y = 0;
+    clip[0].w = 256;
+    clip[0].h = 240;
+    
+    //Dog Animations Opening Sequence
+    //Dog Moving
+    clip[1].x = 256;
+    clip[1].y = 0;
+    clip[1].w = 57;
+    clip[1].h = 45;
+    
+    clip[2].x = 316;
+    clip[2].y = 0;
+    clip[2].w = 55;
+    clip[2].h = 45;
+    
+    clip[3].x = 376;
+    clip[3].y = 0;
+    clip[3].w = 51;
+    clip[3].h = 46;
+    
+    clip[4].x = 431;
+    clip[4].y = 0;
+    clip[4].w = 52;
+    clip[4].h = 46;
+    
+    clip[5].x = 487;
+    clip[5].y = 0;
+    clip[5].w = 52;
+    clip[5].h = 46;
+    
+    //Dog Exclamation
+    clip[6].x = 261;
+    clip[6].y = 60;
+    clip[6].w = 53;
+    clip[6].h = 48;
+    
+    //Dog Jumping into Field
+    clip[7].x = 321;
+    clip[7].y = 56;
+    clip[7].w = 35;
+    clip[7].h = 46;
+    
+    clip[8].x = 361;
+    clip[8].y = 70;
+    clip[8].w = 35;
+    clip[8].h = 32;
+}
+
+void showOpeningAnimation()
+{
+    bool endAnimation = false;
+    
+    while (endAnimation == false)
+    {
+        
+    }
+}
+
 void handleEvents()
 {
     
@@ -137,11 +213,7 @@ int main(int argc, char** argv)
     }
     
     loadFiles();
-    
-    clip[0].x = 0;
-    clip[0].y = 0;
-    clip[0].w = 256;
-    clip[0].h = 240;
+    setClips();
     
     SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
     
@@ -149,6 +221,19 @@ int main(int argc, char** argv)
     {
         return -1;
     }
+    
+    if (applyImages(0, 138, dogOpening1, screen, &clip[1]) == false)
+    {
+        return -1;
+    }
+    
+    applyImages(50, 138, dogOpening2, screen, &clip[2]);
+    
+    applyImages(100, 138, dogOpening3, screen, &clip[3]);
+    
+    applyImages(150, 138, dogOpening4, screen, &clip[4]);
+    
+    applyImages(200, 138, dogOpening5, screen, &clip[5]);
     
     SDL_Flip(screen);
     while (quit == false)
