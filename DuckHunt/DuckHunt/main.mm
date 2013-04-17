@@ -27,15 +27,19 @@ SDL_Color textColor;
 SDL_Event event;
 
 //Sprite Clipping Rect
-SDL_Rect clip[10];
+SDL_Rect clipBackground[1];
+SDL_Rect clipDog[10];
 
 class Dog
 {
 private:
-    
-  
+    int offset;
+    int velocity;
+    int currentFrame;
 public:
-    
+    Dog();
+    void move();
+    void showOpeningAnimation();
 };
 
 //Initialization function - initializes all necessary subsystems and makes them available for use
@@ -142,61 +146,88 @@ void quitProgram()
 void setClips()
 {
     //Background
-    clip[0].x = 0;
-    clip[0].y = 0;
-    clip[0].w = 256;
-    clip[0].h = 240;
+    clipBackground[0].x = 0;
+    clipBackground[0].y = 0;
+    clipBackground[0].w = 256;
+    clipBackground[0].h = 240;
     
     //Dog Animations Opening Sequence
     //Dog Moving
-    clip[1].x = 256;
-    clip[1].y = 0;
-    clip[1].w = 57;
-    clip[1].h = 45;
+    clipDog[0].x = 256;
+    clipDog[0].y = 0;
+    clipDog[0].w = 57;
+    clipDog[0].h = 45;
     
-    clip[2].x = 316;
-    clip[2].y = 0;
-    clip[2].w = 55;
-    clip[2].h = 45;
+    clipDog[1].x = 316;
+    clipDog[1].y = 0;
+    clipDog[1].w = 55;
+    clipDog[1].h = 45;
     
-    clip[3].x = 376;
-    clip[3].y = 0;
-    clip[3].w = 51;
-    clip[3].h = 46;
+    clipDog[2].x = 376;
+    clipDog[2].y = 0;
+    clipDog[2].w = 51;
+    clipDog[2].h = 46;
     
-    clip[4].x = 431;
-    clip[4].y = 0;
-    clip[4].w = 52;
-    clip[4].h = 46;
+    clipDog[3].x = 431;
+    clipDog[3].y = 0;
+    clipDog[3].w = 52;
+    clipDog[3].h = 46;
     
-    clip[5].x = 487;
-    clip[5].y = 0;
-    clip[5].w = 52;
-    clip[5].h = 46;
+    clipDog[4].x = 487;
+    clipDog[4].y = 0;
+    clipDog[4].w = 52;
+    clipDog[4].h = 46;
     
     //Dog Exclamation
-    clip[6].x = 261;
-    clip[6].y = 60;
-    clip[6].w = 53;
-    clip[6].h = 48;
+    clipDog[5].x = 261;
+    clipDog[5].y = 60;
+    clipDog[5].w = 53;
+    clipDog[5].h = 48;
     
     //Dog Jumping into Field
-    clip[7].x = 321;
-    clip[7].y = 56;
-    clip[7].w = 35;
-    clip[7].h = 46;
+    clipDog[6].x = 321;
+    clipDog[6].y = 56;
+    clipDog[6].w = 35;
+    clipDog[6].h = 46;
     
-    clip[8].x = 361;
-    clip[8].y = 70;
-    clip[8].w = 35;
-    clip[8].h = 32;
+    clipDog[7].x = 361;
+    clipDog[7].y = 70;
+    clipDog[7].w = 35;
+    clipDog[7].h = 32;
+}
+
+
+Dog::Dog()
+{
+    offset = 0;
+    velocity = 0;
+    currentFrame = 0;
+}
+
+void Dog::move()
+{
+    offset+=20;
+}
+
+void Dog::showOpeningAnimation()
+{
+    while (currentFrame < 8)
+    {
+        applyImages(0, 0, background, screen, &clipBackground[0]);
+        applyImages(offset, 138, dogOpening, screen, &clipDog[currentFrame]);
+        move();
+        currentFrame++;
+        SDL_Flip(screen);
+        SDL_Delay(700);
+    }
 }
 
 //Main function
 int main(int argc, char** argv)
 {
     bool quit = false;
-    bool openingAnimationComplete = false;
+    bool introAnimationOver = false;
+    Dog huntingDog;
     
     if (init() == false)
     {
@@ -216,7 +247,13 @@ int main(int argc, char** argv)
             }
         }
         
-        applyImages(0, 0, background, screen, &clip[0]);
+        if (introAnimationOver == false)
+        {
+            huntingDog.showOpeningAnimation();
+            introAnimationOver = true;
+        }
+        
+        applyImages(0, 0, background, screen, &clipBackground[0]);
         SDL_Flip(screen);
     }
     
