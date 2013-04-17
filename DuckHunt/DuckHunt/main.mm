@@ -1,7 +1,7 @@
 //  main.mm
 //  Duck Hunt
 //  Created by Jeet Mehta on 2013-04-12.
-//  Copyright (c) 2013 Jeet Mehta. All rights reserved.
+//  Copyright (c) 2013 Jeet Mehta.
 
 #include <iostream>
 #include <SDL/SDL.h>
