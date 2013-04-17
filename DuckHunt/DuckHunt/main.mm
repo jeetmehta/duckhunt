@@ -13,6 +13,7 @@
 const int screenHeight = 240;
 const int screenWidth = 256;
 const int screenBpp = 32;
+const int FRAMES_PER_SECOND = 20;
 
 //Declaring the basic required surfaces/images
 SDL_Surface* screen = NULL;
@@ -23,6 +24,8 @@ SDL_Surface* dogOpening3 = NULL;
 SDL_Surface* dogOpening4 = NULL;
 SDL_Surface* dogOpening5 = NULL;
 SDL_Surface* dogOpening6 = NULL;
+SDL_Surface* dogOpening7 = NULL;
+SDL_Surface* dogOpening8 = NULL;
 
 //Text Color
 SDL_Color textColor;
@@ -32,6 +35,37 @@ SDL_Event event;
 
 //Sprite Clipping Rect
 SDL_Rect clip[10];
+
+class Timer
+{
+private:
+    //The clock time when the timer started
+    int startTicks;
+    
+    //The ticks stored when the timer was paused
+    int pausedTicks;
+    
+    //The timer status
+    bool paused;
+    bool started;
+    
+public:
+    //Initializes variables
+    Timer();
+    
+    //The various clock actions
+    void start();
+    void stop();
+    void pause();
+    void unpause();
+    
+    //Gets the timer's time
+    int get_ticks();
+    
+    //Checks the status of the timer
+    bool is_started();
+    bool is_paused();
+};
 
 //Initialization function - initializes all necessary subsystems and makes them available for use
 bool init()
@@ -101,6 +135,8 @@ bool loadFiles()
     dogOpening4 = loadImage("generalrips.gif", true, 163, 239, 165);
     dogOpening5 = loadImage("generalrips.gif", true, 163, 239, 165);
     dogOpening6 = loadImage("generalrips.gif", true, 163, 239, 165);
+    dogOpening7 = loadImage("generalrips.gif", true, 163, 239, 165);
+    dogOpening8 = loadImage("generalrips.gif", true, 163, 239, 165);
     
     return true;
 }
@@ -187,13 +223,109 @@ void setClips()
     clip[8].h = 32;
 }
 
+Timer::Timer()
+{
+    //Initialize the variables
+    startTicks = 0;
+    pausedTicks = 0;
+    paused = false;
+    started = false;
+}
+
+void Timer::start()
+{
+    //Start the timer
+    started = true;
+    
+    //Unpause the timer
+    paused = false;
+    
+    //Get the current clock time
+    startTicks = SDL_GetTicks();
+}
+
+void Timer::stop()
+{
+    //Stop the timer
+    started = false;
+    
+    //Unpause the timer
+    paused = false;
+}
+
+void Timer::pause()
+{
+    //If the timer is running and isn't already paused
+    if( ( started == true ) && ( paused == false ) )
+    {
+        //Pause the timer
+        paused = true;
+        
+        //Calculate the paused ticks
+        pausedTicks = SDL_GetTicks() - startTicks;
+    }
+}
+
+void Timer::unpause()
+{
+    //If the timer is paused
+    if( paused == true )
+    {
+        //Unpause the timer
+        paused = false;
+        
+        //Reset the starting ticks
+        startTicks = SDL_GetTicks() - pausedTicks;
+        
+        //Reset the paused ticks
+        pausedTicks = 0;
+    }
+}
+
+int Timer::get_ticks()
+{
+    //If the timer is running
+    if( started == true )
+    {
+        //If the timer is paused
+        if( paused == true )
+        {
+            //Return the number of ticks when the timer was paused
+            return pausedTicks;
+        }
+        else
+        {
+            //Return the current time minus the start time
+            return SDL_GetTicks() - startTicks;
+        }
+    }
+    
+    //If the timer isn't running
+    return 0;
+}
+
+bool Timer::is_started()
+{
+    return started;
+}
+
+bool Timer::is_paused()
+{
+    return paused;
+}
+
 void showOpeningAnimation()
 {
-    bool endAnimation = false;
-    
-    while (endAnimation == false)
+    int frame = 1;
+    int offSet = 0;
+    while (frame <= 8)
     {
-        
+        applyImages(0, 0, background, screen, &clip[0]);
+        applyImages(offSet, 138, dogOpening1, screen, &clip[frame]);
+        SDL_Flip(screen);
+        offSet+=20;
+        frame++;
+        SDL_Delay(600);
     }
 }
 
@@ -206,6 +338,8 @@ void handleEvents()
 int main(int argc, char** argv)
 {
     bool quit = false;
+    bool openingAnimationComplete = false;
+    Timer fps;
     
     if (init() == false)
     {
@@ -215,29 +349,10 @@ int main(int argc, char** argv)
     loadFiles();
     setClips();
     
-    SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
-    
-    if (applyImages(0, 0, background, screen, &clip[0]) == false)
-    {
-        return -1;
-    }
-    
-    if (applyImages(0, 138, dogOpening1, screen, &clip[1]) == false)
-    {
-        return -1;
-    }
-    
-    applyImages(50, 138, dogOpening2, screen, &clip[2]);
-    
-    applyImages(100, 138, dogOpening3, screen, &clip[3]);
-    
-    applyImages(150, 138, dogOpening4, screen, &clip[4]);
-    
-    applyImages(200, 138, dogOpening5, screen, &clip[5]);
-    
-    SDL_Flip(screen);
     while (quit == false)
     {
+        fps.start();
+        
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)
@@ -247,6 +362,22 @@ int main(int argc, char** argv)
             
             handleEvents();
         }
+        
+        if (openingAnimationComplete == false)
+        {
+            showOpeningAnimation();
+            openingAnimationComplete = true;
+        }
+        
+        applyImages(0, 0, background, screen, &clip[0]);
+        SDL_Flip(screen);
+        
+        //Cap the frame rate
+        if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
+        {
+            SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
+        }
+    
     }
     
     quitProgram();
