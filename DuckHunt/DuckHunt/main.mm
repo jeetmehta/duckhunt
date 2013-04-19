@@ -42,6 +42,7 @@ private:
     int velocityY;
     int currentFrame;
     bool killed;
+    bool duckMissed;
     
 public:
     Duck();
@@ -337,6 +338,7 @@ Duck::Duck()
     dimensions.h = 0;
     currentFrame = 0;
     killed = false;
+    duckMissed = false;
 }
 
 //Handle's all events related to the duck, basically determining if a duck is clicked on or not
@@ -527,18 +529,23 @@ int Timer::getTimerTime()
 //Main function
 int main(int argc, char** argv)
 {
+    //Declaring necessary variables
     bool quit = false;
-    bool introAnimationOver = false;
     Dog huntingDog;
     Duck duck1;
     
+    //Call all necessary initial functions
     if (init() == false)
     {
         return -1;
     }
-    
     loadFiles();
     setClips();
+    
+    //Opening Dog Animation 
+    huntingDog.showOpeningAnimation();
+    applyImages(0, 0, background, screen, &clipBackground[0]);
+    SDL_Flip(screen);
     
     //Game Loop
     while (quit == false)
@@ -554,17 +561,12 @@ int main(int argc, char** argv)
         }
         //Logic
         
-        //Rendering
-        if (introAnimationOver == false)
-        {
-            huntingDog.showOpeningAnimation();
-            introAnimationOver = true;
-        }
         
-        applyImages(0, 0, background, screen, &clipBackground[0]);
-        SDL_Flip(screen);
+        //Rendering
+        
     }
     
+    //End of program
     quitProgram();
     return 0;
 }
