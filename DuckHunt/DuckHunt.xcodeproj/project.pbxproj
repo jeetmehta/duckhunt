@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8156B2661721D8520090CABB /* timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8156B2651721D8520090CABB /* timer.cpp */; };
 		81BD7A43171D9A950088B3C9 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BD7A42171D9A950088B3C9 /* SDL_mixer.framework */; };
 		81E890D41718427A005B5490 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 81E890D31718427A005B5490 /* main.mm */; };
 		81E890D61718427A005B5490 /* DuckHunt.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 81E890D51718427A005B5490 /* DuckHunt.1 */; };
@@ -35,6 +36,7 @@
 		8156B2611721D6BC0090CABB /* duck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duck.h; sourceTree = "<group>"; };
 		8156B2631721D7590090CABB /* dog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dog.h; sourceTree = "<group>"; };
 		8156B2641721D7620090CABB /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
+		8156B2651721D8520090CABB /* timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = timer.cpp; sourceTree = "<group>"; };
 		81BD7A42171D9A950088B3C9 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = ../../SDL/SDL_mixer.framework; sourceTree = "<group>"; };
 		81E890D01718427A005B5490 /* DuckHunt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DuckHunt; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E890D31718427A005B5490 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				8156B2611721D6BC0090CABB /* duck.h */,
 				8156B2631721D7590090CABB /* dog.h */,
 				8156B2641721D7620090CABB /* timer.h */,
+				8156B2651721D8520090CABB /* timer.cpp */,
 				81E890D51718427A005B5490 /* DuckHunt.1 */,
 			);
 			path = DuckHunt;
@@ -154,6 +157,7 @@
 			files = (
 				81E890DE171842A3005B5490 /* SDLMain.m in Sources */,
 				81E890D41718427A005B5490 /* main.mm in Sources */,
+				8156B2661721D8520090CABB /* timer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
