@@ -45,7 +45,6 @@ private:
 public:
     Duck();
     bool handleEvents();
-    void move();
     void show();
     void fall();
 };
@@ -247,12 +246,6 @@ Dog::Dog()
     currentFrame = 0;
 }
 
-//Moves the dog ahead by 7 units
-void Dog::move()
-{
-    offset+=4;
-}
-
 //Animation - Moves the dog ahead 3 steps
 void Dog::moveAhead()
 {
@@ -274,7 +267,7 @@ void Dog::moveAhead()
             {
                 SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
             }
-            move();
+            offset+=4;
             fps.stop();
         }
         numTimes++;
@@ -327,7 +320,7 @@ void Dog::jumpIntoField()
         {
             SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
         }
-        move();
+        offset+=4;
         fps.stop();
     }
 }
