@@ -235,7 +235,7 @@ Dog::Dog()
     currentFrame = 0;
 }
 
-//Moves the dog ahead by 10 units to the right
+//Moves the dog ahead by 10 units
 void Dog::move()
 {
     offset+=10;
