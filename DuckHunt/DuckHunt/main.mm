@@ -3,6 +3,7 @@
 //  Created by Jeet Mehta on 2013-04-12.
 //  Copyright (c) 2013 Jeet Mehta.
 
+//Include all necessary files and external subsystems
 #include <iostream>
 #include <SDL/SDL.h>
 #include <SDL_ttf/SDL_ttf.h>
@@ -18,7 +19,7 @@ const int FRAMES_PER_SECOND = 20;
 //Declaring the basic required surfaces/images
 SDL_Surface* screen = NULL;
 SDL_Surface* background = NULL;
-SDL_Surface* dogOpening = NULL;
+SDL_Surface* dog = NULL;
 
 //Text Color
 SDL_Color textColor;
@@ -26,20 +27,49 @@ SDL_Color textColor;
 //Event Declaration
 SDL_Event event;
 
-//Sprite Clipping Rect
+//Sprite Clipping Rects - Used to store the various relevant images within the spritesheet
 SDL_Rect clipBackground[1];
 SDL_Rect clipDog[10];
+SDL_Rect clipRect[10];
 
+//Duck Class
+class Duck
+{
+private:
+    
+public:
+    
+};
+
+//Dog Class
 class Dog
 {
 private:
     int offset;
     int velocity;
     int currentFrame;
+
 public:
     Dog();
     void move();
     void showOpeningAnimation();
+};
+
+class Timer
+{
+private:
+    int startTicks;
+    int pauseTicks;
+    bool startedTimer;
+    bool pausedTimer;
+    
+public:
+    Timer();
+    void start();
+    void pause();
+    void unpause();
+    void stop();
+    int getTimerTime();
 };
 
 //Initialization function - initializes all necessary subsystems and makes them available for use
@@ -104,9 +134,9 @@ SDL_Surface* loadImage (std::string filename, bool needColorKey, int red, int gr
 bool loadFiles()
 {
     background = loadImage("generalrips.gif", false, 0, 0, 0);
-    dogOpening = loadImage("generalrips.gif", true, 163, 239, 165);
+    dog = loadImage("generalrips.gif", true, 163, 239, 165);
     
-    if (dogOpening == NULL)
+    if (dog == NULL)
     {
         return false;
     }
@@ -143,6 +173,7 @@ void quitProgram()
     Mix_CloseAudio();
 }
 
+//Sets the dimensions for each necessary image on the spritesheet so that it can be clipped from the sprite properly
 void setClips()
 {
     //Background
@@ -196,7 +227,7 @@ void setClips()
     clipDog[7].h = 32;
 }
 
-
+//Constructor for the dog classes, initializes all the member variables to be 0 values
 Dog::Dog()
 {
     offset = 0;
@@ -204,23 +235,102 @@ Dog::Dog()
     currentFrame = 0;
 }
 
+//Moves the dog ahead by 10 units to the right
 void Dog::move()
 {
-    offset+=20;
+    offset+=10;
 }
 
+//Function that shows the opening animation, which is the dog basically jumping into the field
 void Dog::showOpeningAnimation()
 {
+    Timer fps;
+    int framesPerSecond = 4;
     while (currentFrame < 8)
     {
+        fps.start();
+        SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
         applyImages(0, 0, background, screen, &clipBackground[0]);
-        applyImages(offset, 138, dogOpening, screen, &clipDog[currentFrame]);
-        move();
+        applyImages(offset, 138, dog, screen, &clipDog[currentFrame]);
         currentFrame++;
         SDL_Flip(screen);
-        SDL_Delay(700);
+        if (fps.getTimerTime() < 1000/framesPerSecond)
+        {
+            SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
+        }
+        move();
+        //Delay for the dog's exclamation
+        if (currentFrame == 6)
+        {
+            SDL_Delay(600);
+        }
+        fps.stop();
     }
 }
+
+//Constructor for the timer class, initializes all member values to 0
+Timer::Timer()
+{
+    startTicks = 0;
+    startedTimer = false;
+    
+    pauseTicks = 0;
+    pausedTimer = false;
+}
+
+//Starts the timer
+void Timer::start()
+{
+    if (startedTimer == false && pausedTimer == false)
+    {
+        startTicks = SDL_GetTicks();
+        startedTimer = true;
+    }
+}
+
+//Stops the timer
+void Timer::stop()
+{
+    startedTimer = false;
+    pausedTimer = false;
+}
+
+//Pauses the timer
+void Timer::pause()
+{
+    if (startedTimer == true && pausedTimer == false)
+    {
+        pausedTimer = true;
+        pauseTicks = SDL_GetTicks() - startTicks;
+    }
+}
+
+//Unpauses the timer
+void Timer::unpause()
+{
+    if (startedTimer == true && pausedTimer == true)
+    {
+        pausedTimer = false;
+        startedTimer = SDL_GetTicks() - pauseTicks;
+        pauseTicks = 0;
+    }
+}
+
+//Gets the specfic time which the timer currently shows
+int Timer::getTimerTime()
+{
+    if (startedTimer == true && pausedTimer == true)
+    {
+        return pauseTicks;
+    }
+    else if (startedTimer == true && pausedTimer == false)
+    {
+        return SDL_GetTicks() - startTicks;
+    }
+    
+    return 0;
+}
+
 
 //Main function
 int main(int argc, char** argv)
@@ -237,16 +347,21 @@ int main(int argc, char** argv)
     loadFiles();
     setClips();
     
+    //Game Loop
     while (quit == false)
     {
+        //Events
         while (SDL_PollEvent(&event))
         {
+            //Function that handle's input for the duck should go here
             if (event.type == SDL_QUIT)
             {
                 quit = true;
             }
         }
+        //Logic
         
+        //Rendering
         if (introAnimationOver == false)
         {
             huntingDog.showOpeningAnimation();
