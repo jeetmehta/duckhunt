@@ -36,9 +36,18 @@ SDL_Rect clipRect[10];
 class Duck
 {
 private:
+    SDL_Rect dimensions;
+    int velocityX;
+    int velocityY;
+    int currentFrame;
+    bool killed;
     
 public:
-    
+    Duck();
+    bool handleEvents();
+    void move();
+    void show();
+    void fall();
 };
 
 //Dog Class
@@ -53,6 +62,9 @@ public:
     Dog();
     void move();
     void showOpeningAnimation();
+    void moveAhead();
+    void sniff();
+    void jumpIntoField();
 };
 
 class Timer
@@ -235,37 +247,99 @@ Dog::Dog()
     currentFrame = 0;
 }
 
-//Moves the dog ahead by 10 units
+//Moves the dog ahead by 7 units
 void Dog::move()
 {
-    offset+=10;
+    offset+=4;
 }
 
-//Function that shows the opening animation, which is the dog basically jumping into the field
-void Dog::showOpeningAnimation()
+//Animation - Moves the dog ahead 3 steps
+void Dog::moveAhead()
 {
     Timer fps;
-    int framesPerSecond = 4;
-    while (currentFrame < 8)
+    int framesPerSecond = 5;
+    int numTimes = 0;
+    while (numTimes < 4)
+    {
+        int frame = 2;
+        while (frame <= 4)
+        {
+            fps.start();
+            SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+            applyImages(0, 0, background, screen, &clipBackground[0]);
+            applyImages(offset, 138, dog, screen, &clipDog[frame]);
+            frame++;
+            SDL_Flip(screen);
+            if (fps.getTimerTime() < 1000/framesPerSecond)
+            {
+                SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
+            }
+            move();
+            fps.stop();
+        }
+        numTimes++;
+    }
+}
+
+//Animation - Dog sniffs around 
+void Dog::sniff()
+{
+    Timer fps;
+    int framesPerSecond = 5;
+    int numTimes = 0;
+    while (numTimes < 2)
+    {
+        int frame = 0;
+        while (frame <= 1)
+        {
+            fps.start();
+            SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+            applyImages(0, 0, background, screen, &clipBackground[0]);
+            applyImages(offset, 138, dog, screen, &clipDog[frame]);
+            frame++;
+            SDL_Flip(screen);
+            if (fps.getTimerTime() < 1000/framesPerSecond)
+            {
+                SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
+            }
+            fps.stop();
+        }
+        std::cout << numTimes;
+    numTimes++;
+    }
+}
+
+//Animation - Dog Jumps into the field
+void Dog::jumpIntoField()
+{
+    Timer fps;
+    int framesPerSecond = 2;
+    int frame = 5;
+    while (frame <= 7)
     {
         fps.start();
         SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
         applyImages(0, 0, background, screen, &clipBackground[0]);
-        applyImages(offset, 138, dog, screen, &clipDog[currentFrame]);
-        currentFrame++;
+        applyImages(offset, 138, dog, screen, &clipDog[frame]);
+        frame++;
         SDL_Flip(screen);
         if (fps.getTimerTime() < 1000/framesPerSecond)
         {
             SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
         }
         move();
-        //Delay for the dog's exclamation
-        if (currentFrame == 6)
-        {
-            SDL_Delay(600);
-        }
         fps.stop();
     }
+}
+
+//Function that shows the opening animation, which is the dog basically jumping into the field
+void Dog::showOpeningAnimation()
+{
+    moveAhead();
+    sniff();
+    moveAhead();
+    sniff();
+    jumpIntoField();
 }
 
 //Constructor for the timer class, initializes all member values to 0
@@ -330,7 +404,6 @@ int Timer::getTimerTime()
     
     return 0;
 }
-
 
 //Main function
 int main(int argc, char** argv)
