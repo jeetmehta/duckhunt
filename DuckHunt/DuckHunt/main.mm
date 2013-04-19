@@ -9,6 +9,9 @@
 #include <SDL_ttf/SDL_ttf.h>
 #include <SDL_image/SDL_image.h>
 #include <SDL_mixer/SDL_mixer.h>
+#include "duck.h"
+#include "dog.h"
+#include "timer.h"
 
 //Screen Size
 const int screenHeight = 240;
@@ -32,59 +35,6 @@ SDL_Event event;
 SDL_Rect clipBackground[1];
 SDL_Rect clipDog[11];
 SDL_Rect clipDuck[10];
-
-//Duck Class
-class Duck
-{
-private:
-    SDL_Rect dimensions;
-    int velocityX;
-    int velocityY;
-    int currentFrame;
-    bool killed;
-    bool duckMissed;
-    
-public:
-    Duck();
-    bool handleEvents(int xCoodClick, int yCoordClick);
-    void show();
-    void showFallingAnimation();
-    void fall();
-};
-
-//Dog Class
-class Dog
-{
-private:
-    int offset;
-    int velocity;
-    int currentFrame;
-
-public:
-    Dog();
-    void move();
-    void showOpeningAnimation();
-    void moveAhead();
-    void sniff();
-    void jumpIntoField();
-};
-
-class Timer
-{
-private:
-    int startTicks;
-    int pauseTicks;
-    bool startedTimer;
-    bool pausedTimer;
-    
-public:
-    Timer();
-    void start();
-    void pause();
-    void unpause();
-    void stop();
-    int getTimerTime();
-};
 
 //Initialization function - initializes all necessary subsystems and makes them available for use
 bool init()
@@ -558,12 +508,21 @@ int main(int argc, char** argv)
             {
                 quit = true;
             }
+            if (event.type == SDL_MOUSEBUTTONDOWN)
+            {
+               if (event.button.button == SDL_BUTTON_LEFT)
+               {
+                   int x = event.button.x;
+                   int y = event.button.y;
+                   duck1.handleEvents(x, y);
+               }
+            }
         }
         //Logic
         
         
         //Rendering
-        
+
     }
     
     //End of program

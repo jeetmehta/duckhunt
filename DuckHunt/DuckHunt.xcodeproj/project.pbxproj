@@ -32,6 +32,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8156B2611721D6BC0090CABB /* duck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duck.h; sourceTree = "<group>"; };
+		8156B2631721D7590090CABB /* dog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dog.h; sourceTree = "<group>"; };
+		8156B2641721D7620090CABB /* timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
 		81BD7A42171D9A950088B3C9 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = ../../SDL/SDL_mixer.framework; sourceTree = "<group>"; };
 		81E890D01718427A005B5490 /* DuckHunt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DuckHunt; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E890D31718427A005B5490 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
@@ -90,6 +93,9 @@
 			isa = PBXGroup;
 			children = (
 				81E890D31718427A005B5490 /* main.mm */,
+				8156B2611721D6BC0090CABB /* duck.h */,
+				8156B2631721D7590090CABB /* dog.h */,
+				8156B2641721D7620090CABB /* timer.h */,
 				81E890D51718427A005B5490 /* DuckHunt.1 */,
 			);
 			path = DuckHunt;
