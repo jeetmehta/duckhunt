@@ -44,7 +44,7 @@ private:
     
 public:
     Duck();
-    bool handleEvents();
+    void handleEvents(int xCoodClick, int yCoordClick);
     void show();
     void fall();
 };
@@ -238,7 +238,29 @@ void setClips()
     clipDog[7].h = 32;
 }
 
-//Constructor for the dog classes, initializes all the member variables to be 0 values
+//Constructor for the duck class, initializes all the member variables to be 0 values
+Duck::Duck()
+{
+    velocityX = 0;
+    velocityY = 0;
+    dimensions.x = 0;
+    dimensions.y = 0;
+    dimensions.w = 0;
+    dimensions.h = 0;
+    currentFrame = 0;
+    killed = false;
+}
+
+//Handle's all events related to the duck, basically determining if a duck is clicked on or not
+void Duck::handleEvents(int xClick, int yClick)
+{
+    if ((xClick > dimensions.x && xClick < (dimensions.x + dimensions.w)) && (yClick > dimensions.y && yClick < (dimensions.y + dimensions.h)))
+    {
+        std::cout << "Duck was clicked";
+    }
+}
+
+//Constructor for the dog class, initializes all the member variables to be 0 values
 Dog::Dog()
 {
     offset = 0;
@@ -246,12 +268,13 @@ Dog::Dog()
     currentFrame = 0;
 }
 
-//Animation - Moves the dog ahead 3 steps
+//Animation - Moves the dog ahead
 void Dog::moveAhead()
 {
     Timer fps;
     int framesPerSecond = 5;
     int numTimes = 0;
+    
     while (numTimes < 4)
     {
         int frame = 2;
@@ -280,6 +303,7 @@ void Dog::sniff()
     Timer fps;
     int framesPerSecond = 5;
     int numTimes = 0;
+    
     while (numTimes < 2)
     {
         int frame = 0;
@@ -308,6 +332,7 @@ void Dog::jumpIntoField()
     Timer fps;
     int framesPerSecond = 2;
     int frame = 5;
+    
     while (frame <= 7)
     {
         fps.start();
