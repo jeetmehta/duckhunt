@@ -20,6 +20,7 @@ const int FRAMES_PER_SECOND = 20;
 SDL_Surface* screen = NULL;
 SDL_Surface* background = NULL;
 SDL_Surface* dog = NULL;
+SDL_Surface* duck = NULL;
 
 //Text Color
 SDL_Color textColor;
@@ -29,8 +30,8 @@ SDL_Event event;
 
 //Sprite Clipping Rects - Used to store the various relevant images within the spritesheet
 SDL_Rect clipBackground[1];
-SDL_Rect clipDog[10];
-SDL_Rect clipRect[10];
+SDL_Rect clipDog[11];
+SDL_Rect clipDuck[10];
 
 //Duck Class
 class Duck
@@ -44,8 +45,9 @@ private:
     
 public:
     Duck();
-    void handleEvents(int xCoodClick, int yCoordClick);
+    bool handleEvents(int xCoodClick, int yCoordClick);
     void show();
+    void showFallingAnimation();
     void fall();
 };
 
@@ -146,6 +148,7 @@ bool loadFiles()
 {
     background = loadImage("generalrips.gif", false, 0, 0, 0);
     dog = loadImage("generalrips.gif", true, 163, 239, 165);
+    duck = loadImage("generalrips.gif", true, 163, 239, 165);
     
     if (dog == NULL)
     {
@@ -184,16 +187,8 @@ void quitProgram()
     Mix_CloseAudio();
 }
 
-//Sets the dimensions for each necessary image on the spritesheet so that it can be clipped from the sprite properly
-void setClips()
+void setDogClips()
 {
-    //Background
-    clipBackground[0].x = 0;
-    clipBackground[0].y = 0;
-    clipBackground[0].w = 256;
-    clipBackground[0].h = 240;
-    
-    //Dog Animations Opening Sequence
     //Dog Moving
     clipDog[0].x = 256;
     clipDog[0].y = 0;
@@ -236,6 +231,99 @@ void setClips()
     clipDog[7].y = 70;
     clipDog[7].w = 35;
     clipDog[7].h = 32;
+    
+    //Dog holding one bird
+    clipDog[8].x = 410;
+    clipDog[8].y = 65;
+    clipDog[8].w = 43;
+    clipDog[8].h = 39;
+    
+    //Dog holding two birds
+    clipDog[9].x = 454;
+    clipDog[9].y = 65;
+    clipDog[9].w = 56;
+    clipDog[9].h = 39;
+    
+    //Dog Laughing
+    clipDog[10].x = 511;
+    clipDog[10].y = 63;
+    clipDog[10].w = 29;
+    clipDog[10].h = 39;
+    
+    clipDog[11].x = 542;
+    clipDog[11].y = 63;
+    clipDog[11].w = 29;
+    clipDog[11].h = 39;
+
+}
+
+void setBackgroundClips()
+{
+    clipBackground[0].x = 0;
+    clipBackground[0].y = 0;
+    clipBackground[0].w = 256;
+    clipBackground[0].h = 240;
+}
+
+void setDuckClips()
+{
+    //Black Duck Flying - Diagonal Upper Left
+    clipDuck[0].x = 266;
+    clipDuck[0].y = 115;
+    clipDuck[0].w = 27;
+    clipDuck[0].h = 31;
+    
+    clipDuck[1].x = 297;
+    clipDuck[1].y = 117;
+    clipDuck[1].w = 32;
+    clipDuck[1].h = 29;
+    
+    clipDuck[2].x = 331;
+    clipDuck[2].y = 117;
+    clipDuck[2].w = 25;
+    clipDuck[2].h = 31;
+    
+    //Black Duck Flying - Horizontal Right
+    clipDuck[3].x = 367;
+    clipDuck[3].y = 121;
+    clipDuck[3].w = 34;
+    clipDuck[3].h = 29;
+    
+    clipDuck[4].x = 405;
+    clipDuck[4].y = 131;
+    clipDuck[4].w = 34;
+    clipDuck[4].h = 20;
+    
+    clipDuck[5].x = 442;
+    clipDuck[5].y = 129;
+    clipDuck[5].w = 34;
+    clipDuck[5].h = 24;
+    
+    //Black Duck Shot
+    clipDuck[6].x = 484;
+    clipDuck[6].y = 125;
+    clipDuck[6].w = 31;
+    clipDuck[6].h = 29;
+    
+    //Black Duck Falling
+    clipDuck[7].x = 525;
+    clipDuck[7].y = 123;
+    clipDuck[7].w = 18;
+    clipDuck[7].h = 31;
+    
+    clipDuck[8].x = 549;
+    clipDuck[8].y = 123;
+    clipDuck[8].w = 18;
+    clipDuck[8].h = 31;
+}
+
+//Sets the dimensions for each necessary image on the spritesheet so that it can be clipped from the sprite properly
+void setClips()
+{
+
+    setBackgroundClips();
+    setDogClips();
+    setDuckClips();
 }
 
 //Constructor for the duck class, initializes all the member variables to be 0 values
@@ -252,12 +340,26 @@ Duck::Duck()
 }
 
 //Handle's all events related to the duck, basically determining if a duck is clicked on or not
-void Duck::handleEvents(int xClick, int yClick)
+bool Duck::handleEvents(int xClick, int yClick)
 {
     if ((xClick > dimensions.x && xClick < (dimensions.x + dimensions.w)) && (yClick > dimensions.y && yClick < (dimensions.y + dimensions.h)))
     {
         std::cout << "Duck was clicked";
+        return true;
     }
+    return false;
+}
+
+void Duck::show()
+{
+    SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+    applyImages(0, 0, background, screen, &clipBackground[0]);
+    if (killed == true)
+    {
+        applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[6]);
+        //showFallingAnimation();
+    }
+    
 }
 
 //Constructor for the dog class, initializes all the member variables to be 0 values
@@ -321,7 +423,6 @@ void Dog::sniff()
             }
             fps.stop();
         }
-        std::cout << numTimes;
     numTimes++;
     }
 }
@@ -429,6 +530,7 @@ int main(int argc, char** argv)
     bool quit = false;
     bool introAnimationOver = false;
     Dog huntingDog;
+    Duck duck1;
     
     if (init() == false)
     {
