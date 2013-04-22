@@ -330,6 +330,22 @@ bool Duck::handleEvents(int xClick, int yClick)
     return false;
 }
 
+void Duck::move()
+{
+    dimensions.x += velocityX;
+    dimensions.y += velocityY;
+    
+    if ((dimensions.x + dimensions.w >= screenWidth) || dimensions.x < 0)
+    {
+        dimensions.x -= (velocityX + dimensions.w);
+    }
+    
+    if (dimensions.y + dimensions.h >= duckAreaHeight|| dimensions.y < 0)
+    {
+        dimensions.y -= (velocityY + dimensions.h);
+    }
+}
+
 void Duck::show()
 {
     SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
@@ -347,22 +363,6 @@ void Duck::show()
         currentFrame = 0;
     }
 
-}
-
-void Duck::move()
-{
-    dimensions.x += velocityX;
-    dimensions.y += velocityY;
-    
-    if ((dimensions.x + dimensions.w >= screenWidth) || dimensions.x < 0)
-    {
-        dimensions.x -= (velocityX + dimensions.w);
-    }
-    
-    if (dimensions.y + dimensions.h >= duckAreaHeight|| dimensions.y < 0)
-    {
-        dimensions.y -= (velocityY + dimensions.h);
-    }
 }
 
 //Constructor for the dog class, initializes all the member variables to be 0 values
