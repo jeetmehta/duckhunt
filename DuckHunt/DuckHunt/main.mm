@@ -339,12 +339,22 @@ void Duck::showFallingAnimation()
     Timer fps;
     int frame = 7;
     int framesPerSecond = 10;
-    while (dimensions.y <= duckAreaHeight - duckHeight)
+    while (dimensions.y <= duckAreaHeight)
     {
-        SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
-        applyImages(0, 0, background, screen);
-        applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[frame]);
-        SDL_Flip(screen);
+        if (dimensions.h + dimensions.y > duckAreaHeight)
+        {
+            applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[frame]);
+            applyImages(0, 0, background, screen);
+            SDL_Flip(screen);
+        }
+        else
+        {
+            SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+            applyImages(0, 0, background, screen);
+            applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[frame]);
+            SDL_Flip(screen);
+        }
+        
         dimensions.y += duckHeight/5;
         if (frame == 8)
         {
