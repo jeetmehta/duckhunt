@@ -325,10 +325,6 @@ bool Duck::handleEvents(int xClick, int yClick)
         std::cout << "Duck was clicked";
         killed = true;
         duckMissed = false;
-        applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[6]);
-        SDL_Flip(screen);
-        SDL_Delay(500);
-        showFallingAnimation();
         return true;
     }
     return false;
@@ -392,7 +388,9 @@ void Duck::show()
     if (killed == true)
     {
         applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[6]);
-        //showFallingAnimation();
+        SDL_Flip(screen);
+        SDL_Delay(500);
+        showFallingAnimation();
     }
     applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[currentFrame]);
     std::cout << currentFrame;
@@ -512,8 +510,8 @@ int main(int argc, char** argv)
     Timer fps;
     int randomStartingPoints[10] = {23,64,123,43,31,31,54,21,14,135};
     SDL_Rect duckDimensions;
-    duckDimensions.x = randomStartingPoints[0];
-    duckDimensions.y = randomStartingPoints[1];
+    duckDimensions.x = 78;
+    duckDimensions.y = 13;
     duckDimensions.w = 35;
     duckDimensions.h = 35;
     Duck duck1 = Duck(duckDimensions, 5, 7, 0, false, false);
