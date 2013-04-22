@@ -38,6 +38,12 @@ SDL_Rect clipBackground[1];
 SDL_Rect clipDog[11];
 SDL_Rect clipDuck[10];
 
+//Game-Related variables
+int duckHeight = 35;
+int duckWidth =  35;
+const int duckAreaHeight = 150;
+const int duckAreaWidth = screenWidth;
+
 //Initialization function - initializes all necessary subsystems and makes them available for use
 bool init()
 {
@@ -334,6 +340,7 @@ void Duck::show()
         //showFallingAnimation();
     }
     applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[currentFrame]);
+    std::cout << currentFrame;
     currentFrame++;
     if (killed == false && currentFrame > 5)
     {
@@ -347,10 +354,14 @@ void Duck::move()
     dimensions.x += velocityX;
     dimensions.y += velocityY;
     
-    if ((dimensions.x >= screenWidth - dimensions.x) || (dimensions.y >= screenHeight - dimensions.y) || (dimensions.x < 0) || (dimensions.y < 0))
+    if ((dimensions.x + dimensions.w >= screenWidth) || dimensions.x < 0)
     {
-        dimensions.x -= velocityX;
-        dimensions.y -= velocityY;
+        dimensions.x -= (velocityX + dimensions.w);
+    }
+    
+    if (dimensions.y + dimensions.h >= duckAreaHeight|| dimensions.y < 0)
+    {
+        dimensions.y -= (velocityY + dimensions.h);
     }
 }
 
@@ -515,6 +526,8 @@ int main(int argc, char** argv)
         {
             SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.getTimerTime());
         }
+        
+        fps.stop();
     }
     
     //End of program
