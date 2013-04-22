@@ -325,9 +325,38 @@ bool Duck::handleEvents(int xClick, int yClick)
         std::cout << "Duck was clicked";
         killed = true;
         duckMissed = false;
+        applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[6]);
+        SDL_Flip(screen);
+        SDL_Delay(500);
+        showFallingAnimation();
         return true;
     }
     return false;
+}
+
+void Duck::showFallingAnimation()
+{
+    Timer fps;
+    int frame = 7;
+    int framesPerSecond = 10;
+    while (dimensions.y <= duckAreaHeight - duckHeight)
+    {
+        SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+        applyImages(0, 0, background, screen);
+        applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[frame]);
+        SDL_Flip(screen);
+        dimensions.y += duckHeight/5;
+        if (frame == 8)
+        {
+            frame = 6;
+        }
+        frame++;
+        if (fps.getTimerTime() < 1000/framesPerSecond)
+        {
+            SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
+        }
+        
+    }
 }
 
 void Duck::move()
