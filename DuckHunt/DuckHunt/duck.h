@@ -24,8 +24,10 @@ private:
     
 public:
     Duck();
+    Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck);
     bool handleEvents(int xCoodClick, int yCoordClick);
     void show();
+    void move();
     void showFallingAnimation();
     void fall();
 };
