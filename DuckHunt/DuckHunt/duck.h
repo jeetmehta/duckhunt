@@ -21,7 +21,7 @@ private:
     int currentFrame;
     bool killed;
     bool duckMissed;
-
+    
 public:
     Duck();
     bool handleEvents(int xCoodClick, int yCoordClick);

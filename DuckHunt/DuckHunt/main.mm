@@ -12,6 +12,8 @@
 #include "duck.h"
 #include "dog.h"
 #include "timer.h"
+#include "duck.cpp"
+
 
 //Screen Size
 const int screenHeight = 240;
