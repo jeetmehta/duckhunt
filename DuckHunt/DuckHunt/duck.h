@@ -30,6 +30,7 @@ public:
     void move();
     void showFallingAnimation();
     void fall();
+    bool getKilled();
 };
 
 

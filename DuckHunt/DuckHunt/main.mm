@@ -13,13 +13,14 @@
 #include "dog.h"
 #include "timer.h"
 #include "duck.cpp"
+#include <vector>
 
 
 //Screen Size
 const int screenHeight = 240;
 const int screenWidth = 256;
 const int screenBpp = 32;
-const int FRAMES_PER_SECOND = 10;
+const int FRAMES_PER_SECOND = 5;
 
 //Declaring the basic required surfaces/images
 SDL_Surface* screen = NULL;
@@ -312,14 +313,14 @@ Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, b
     duckMissed = missedTheDuck;
 }
 
+bool Duck::getKilled()
+{
+    return killed;
+}
+
 //Handle's all events related to the duck, basically determining if a duck is clicked on or not
 bool Duck::handleEvents(int xClick, int yClick)
 {
-    velocityX+= dimensions.w;
-    velocityY+= dimensions.h;
-    
-    std::cout << velocityX << velocityY << std::endl;
-    
     if ((xClick > dimensions.x && xClick < (dimensions.x + dimensions.w)) && (yClick > dimensions.y && yClick < (dimensions.y + dimensions.h)))
     {
         std::cout << "Duck was clicked";
@@ -327,7 +328,51 @@ bool Duck::handleEvents(int xClick, int yClick)
         duckMissed = false;
         return true;
     }
+    
     return false;
+}
+
+void Duck::move()
+{
+    if (killed == false)
+    {
+        velocityX+= dimensions.w/10;
+        velocityY+= dimensions.h/10;
+        
+        dimensions.x += velocityX;
+        dimensions.y += velocityY;
+    }
+    
+    if ((dimensions.x + dimensions.w >= screenWidth) || dimensions.x < 0)
+    {
+        dimensions.x -= (velocityX + dimensions.w);
+    }
+    
+    if (dimensions.y + dimensions.h >= duckAreaHeight|| dimensions.y < 0)
+    {
+        dimensions.y -= (velocityY + dimensions.h);
+    }
+}
+
+void Duck::show()
+{
+    SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+    applyImages(0, 0, background, screen, &clipBackground[0]);
+    if (killed == true)
+    {
+        applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[6]);
+        SDL_Flip(screen);
+        SDL_Delay(500);
+        showFallingAnimation();
+    }
+    applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[currentFrame]);
+    std::cout << currentFrame;
+    currentFrame++;
+    if (killed == false && currentFrame > 5)
+    {
+        currentFrame = 0;
+    }
+
 }
 
 void Duck::showFallingAnimation()
@@ -363,43 +408,6 @@ void Duck::showFallingAnimation()
         }
         
     }
-}
-
-void Duck::move()
-{
-    dimensions.x += velocityX;
-    dimensions.y += velocityY;
-    
-    if ((dimensions.x + dimensions.w >= screenWidth) || dimensions.x < 0)
-    {
-        dimensions.x -= (velocityX + dimensions.w);
-    }
-    
-    if (dimensions.y + dimensions.h >= duckAreaHeight|| dimensions.y < 0)
-    {
-        dimensions.y -= (velocityY + dimensions.h);
-    }
-}
-
-void Duck::show()
-{
-    SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
-    applyImages(0, 0, background, screen, &clipBackground[0]);
-    if (killed == true)
-    {
-        applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[6]);
-        SDL_Flip(screen);
-        SDL_Delay(500);
-        showFallingAnimation();
-    }
-    applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[currentFrame]);
-    std::cout << currentFrame;
-    currentFrame++;
-    if (killed == false && currentFrame > 5)
-    {
-        currentFrame = 0;
-    }
-
 }
 
 //Constructor for the dog class, initializes all the member variables to be 0 values
@@ -508,14 +516,23 @@ int main(int argc, char** argv)
     bool quit = false;
     Dog huntingDog;
     Timer fps;
-    int randomStartingPoints[10] = {23,64,123,43,31,31,54,21,14,135};
     SDL_Rect duckDimensions;
-    duckDimensions.x = 78;
-    duckDimensions.y = 13;
-    duckDimensions.w = 35;
-    duckDimensions.h = 35;
-    Duck duck1 = Duck(duckDimensions, 5, 7, 0, false, false);
+    int duckCounter = 0;
+    std::vector<Duck> ducksArray;
+    int counter = 0;
     
+    while (counter <= 10)
+    {
+        duckDimensions.x = rand() % 222;
+        duckDimensions.y = rand() % 116;
+        duckDimensions.w = 35;
+        duckDimensions.h = 35;
+        
+        Duck duck = Duck(duckDimensions, 0, 0, 0, false, false);
+        ducksArray.push_back(duck);
+        counter++;
+    }
+
     //Call all necessary initial functions
     if (init() == false)
     {
@@ -542,22 +559,36 @@ int main(int argc, char** argv)
             {
                 quit = true;
             }
+
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
                if (event.button.button == SDL_BUTTON_LEFT)
                {
                    int x = event.button.x;
                    int y = event.button.y;
-                   duck1.handleEvents(x, y);
+                   ducksArray[duckCounter].handleEvents(x, y);
                }
             }
+            
+            else if (duckCounter > 10)
+            {
+                quit = true;
+            }
         }
+        
         //Logic
-        duck1.move();
+        ducksArray[duckCounter].move();
         
         //Rendering
-        duck1.show();
+        ducksArray[duckCounter].show();
         SDL_Flip(screen);
+        
+        if (ducksArray[duckCounter].getKilled() == true)
+        {
+            applyImages(0, 0, background, screen, &clipBackground[0]);
+            SDL_Flip(screen);
+            duckCounter++;
+        }
         
         if(fps.getTimerTime() < 1000 / FRAMES_PER_SECOND )
         {
