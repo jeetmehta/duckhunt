@@ -44,6 +44,10 @@ int duckHeight = 35;
 int duckWidth =  35;
 const int duckAreaHeight = 150;
 const int duckAreaWidth = screenWidth;
+const int goingUpRight = 0;
+const int goingUpLeft = 1;
+const int goingDownRight = 2;
+const int goingDownLeft = 3;
 
 //Initialization function - initializes all necessary subsystems and makes them available for use
 bool init()
@@ -301,7 +305,7 @@ Duck::Duck()
     duckMissed = false;
 }
 
-Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck, int numberClicks)
+Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck, int numberClicks, int speedStatus)
 {
     dimensions.x = attributes.x;
     dimensions.y = attributes.y;
@@ -313,6 +317,7 @@ Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, b
     killed = dead;
     duckMissed = missedTheDuck;
     numClicks = numberClicks;
+    status = speedStatus;
 }
 
 bool Duck::getKilled()
@@ -351,21 +356,51 @@ void Duck::move()
 {
     if (killed == false)
     {
-        velocityX+= dimensions.w/10;
-        velocityY+= dimensions.h/10;
+        if (status == goingUpRight)
+        {
+            velocityX+= dimensions.w/10;
+            velocityY+= dimensions.h/10;
+            
+            dimensions.x += velocityX;
+            dimensions.y -= velocityY;
+        }
+        else if(status == goingUpLeft)
+        {
+            velocityX+= dimensions.w/10;
+            velocityY+= dimensions.h/10;
+            
+            dimensions.x -= velocityX;
+            dimensions.y -= velocityY;
+        }
+        else if (status == goingDownRight)
+        {
+            velocityX+= dimensions.w/10;
+            velocityY+= dimensions.h/10;
+            
+            dimensions.x += velocityX;
+            dimensions.y += velocityY;
+        }
+        else if (status == goingDownLeft)
+        {
+            velocityX+= dimensions.w/10;
+            velocityY+= dimensions.h/10;
+            
+            dimensions.x -= velocityX;
+            dimensions.y += velocityY;
+        }
         
-        dimensions.x += velocityX;
-        dimensions.y += velocityY;
     }
     
     if ((dimensions.x + dimensions.w >= screenWidth) || dimensions.x < 0)
     {
         dimensions.x -= (velocityX + dimensions.w);
+        fixCollisionLR();
     }
     
     if (dimensions.y + dimensions.h >= duckAreaHeight|| dimensions.y < 0)
     {
         dimensions.y -= (velocityY + dimensions.h);
+        fixCollisionUD();
     }
 }
 
@@ -387,6 +422,46 @@ void Duck::show()
         currentFrame = 0;
     }
 
+}
+
+void Duck::fixCollisionLR()
+{
+    if (status == goingDownLeft)
+    {
+        status = goingDownRight;
+    }
+    else if (status == goingDownRight)
+    {
+        status = goingDownLeft;
+    }
+    else if (status == goingUpLeft)
+    {
+        status = goingUpRight;
+    }
+    else if (status == goingUpRight)
+    {
+        status = goingUpLeft;
+    }
+}
+
+void Duck::fixCollisionUD()
+{
+    if (status == goingDownLeft)
+    {
+        status = goingUpLeft;
+    }
+    else if (status == goingDownRight)
+    {
+        status = goingUpRight;
+    }
+    else if (status == goingUpLeft)
+    {
+        status = goingDownLeft;
+    }
+    else if (status == goingUpRight)
+    {
+        status = goingDownRight;
+    }
 }
 
 void Duck::showFallingAnimation()
@@ -542,7 +617,7 @@ int main(int argc, char** argv)
         duckDimensions.w = 35;
         duckDimensions.h = 35;
         
-        Duck duck = Duck(duckDimensions, 0, 0, 0, false, false, 0);
+        Duck duck = Duck(duckDimensions, 0, 0, 0, false, false, 0, goingUpRight);
         ducksArray.push_back(duck);
         counter++;
     }

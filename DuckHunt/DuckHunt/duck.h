@@ -22,10 +22,11 @@ private:
     bool killed;
     bool duckMissed;
     int numClicks;
+    int status;
     
 public:
     Duck();
-    Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck, int numberClicks);
+    Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck, int numberClicks, int status);
     bool handleEvents(int xCoodClick, int yCoordClick);
     void show();
     void move();
@@ -33,6 +34,8 @@ public:
     void fall();
     bool getKilled();
     int getClicks();
+    void fixCollisionLR();
+    void fixCollisionUD();
 };
 
 
