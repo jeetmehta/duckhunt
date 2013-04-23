@@ -295,12 +295,13 @@ Duck::Duck()
     dimensions.y = 0;
     dimensions.w = 0;
     dimensions.h = 0;
+    numClicks = 0;
     currentFrame = 0;
     killed = false;
     duckMissed = false;
 }
 
-Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck)
+Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck, int numberClicks)
 {
     dimensions.x = attributes.x;
     dimensions.y = attributes.y;
@@ -311,6 +312,7 @@ Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, b
     currentFrame = frameNow;
     killed = dead;
     duckMissed = missedTheDuck;
+    numClicks = numberClicks;
 }
 
 bool Duck::getKilled()
@@ -318,15 +320,28 @@ bool Duck::getKilled()
     return killed;
 }
 
+int Duck::getClicks()
+{
+    return numClicks;
+}
+
 //Handle's all events related to the duck, basically determining if a duck is clicked on or not
 bool Duck::handleEvents(int xClick, int yClick)
 {
-    if ((xClick > dimensions.x && xClick < (dimensions.x + dimensions.w)) && (yClick > dimensions.y && yClick < (dimensions.y + dimensions.h)))
+    numClicks++;
+    std::cout << numClicks;
+    if ((xClick > dimensions.x && xClick < (dimensions.x + dimensions.w)) && (yClick > dimensions.y && yClick < (dimensions.y + dimensions.h)) && numClicks <= 3)
     {
-        std::cout << "Duck was clicked";
+        std::cout << "Duck was killed";
         killed = true;
         duckMissed = false;
         return true;
+    }
+    else if (numClicks >= 3 && killed == false)
+    {
+        duckMissed = true;
+        killed = false;
+        std::cout << "3 shots are finished";
     }
     
     return false;
@@ -366,7 +381,6 @@ void Duck::show()
         showFallingAnimation();
     }
     applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[currentFrame]);
-    std::cout << currentFrame;
     currentFrame++;
     if (killed == false && currentFrame > 5)
     {
@@ -528,7 +542,7 @@ int main(int argc, char** argv)
         duckDimensions.w = 35;
         duckDimensions.h = 35;
         
-        Duck duck = Duck(duckDimensions, 0, 0, 0, false, false);
+        Duck duck = Duck(duckDimensions, 0, 0, 0, false, false, 0);
         ducksArray.push_back(duck);
         counter++;
     }

@@ -21,16 +21,18 @@ private:
     int currentFrame;
     bool killed;
     bool duckMissed;
+    int numClicks;
     
 public:
     Duck();
-    Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck);
+    Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck, int numberClicks);
     bool handleEvents(int xCoodClick, int yCoordClick);
     void show();
     void move();
     void showFallingAnimation();
     void fall();
     bool getKilled();
+    int getClicks();
 };
 
 
