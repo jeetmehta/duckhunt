@@ -426,41 +426,59 @@ void Duck::show()
 
 void Duck::fixCollisionLR()
 {
+    std::cout << "Fix collision left/right is called"<<std::endl;
     if (status == goingDownLeft)
     {
         status = goingDownRight;
+        dimensions.x += dimensions.w/2;
+        dimensions.y -= dimensions.h/2;
     }
     else if (status == goingDownRight)
     {
         status = goingDownLeft;
+        dimensions.x -= dimensions.w/2;
+        dimensions.y += dimensions.h/2;
     }
     else if (status == goingUpLeft)
     {
         status = goingUpRight;
+        dimensions.x += dimensions.w/2;
+        dimensions.y -= dimensions.h/2;
     }
     else if (status == goingUpRight)
     {
         status = goingUpLeft;
+        dimensions.x -= dimensions.w/2;
+        dimensions.y -= dimensions.h/2;
     }
 }
 
 void Duck::fixCollisionUD()
 {
+    std::cout << "Fix collision up/down is called"<<std::endl;
     if (status == goingDownLeft)
     {
         status = goingUpLeft;
+        dimensions.x -= dimensions.w/2;
+        dimensions.y -= dimensions.h/2;
     }
     else if (status == goingDownRight)
     {
         status = goingUpRight;
+        dimensions.x += dimensions.w/2;
+        dimensions.y -= dimensions.h/2;
     }
     else if (status == goingUpLeft)
     {
         status = goingDownLeft;
+        dimensions.x -= dimensions.w/2;
+        dimensions.y += dimensions.h/2;
     }
     else if (status == goingUpRight)
     {
         status = goingDownRight;
+        dimensions.x += dimensions.w/2;
+        dimensions.y -= dimensions.h/2;
     }
 }
 
