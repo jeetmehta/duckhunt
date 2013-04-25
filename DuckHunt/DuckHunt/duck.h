@@ -36,6 +36,8 @@ public:
     int getClicks();
     void fixCollisionLR();
     void fixCollisionUD();
+    void showFlyingAwayAnimation();
+    bool getDuckMissed();
 };
 
 

@@ -27,6 +27,7 @@ SDL_Surface* screen = NULL;
 SDL_Surface* background = NULL;
 SDL_Surface* dog = NULL;
 SDL_Surface* duck = NULL;
+SDL_Surface* button = NULL;
 
 //Text Color
 SDL_Color textColor;
@@ -38,6 +39,7 @@ SDL_Event event;
 SDL_Rect clipBackground[1];
 SDL_Rect clipDog[11];
 SDL_Rect clipDuck[10];
+SDL_Rect clipButtons[10];
 
 //Game-Related variables
 int duckHeight = 35;
@@ -113,6 +115,7 @@ bool loadFiles()
     background = loadImage("generalrips.gif", false, 0, 0, 0);
     dog = loadImage("generalrips.gif", true, 163, 239, 165);
     duck = loadImage("generalrips.gif", true, 163, 239, 165);
+    button = loadImage("generalrips.gif", true, 163, 239, 165);
     
     if (dog == NULL)
     {
@@ -229,6 +232,15 @@ void setBackgroundClips()
     clipBackground[0].h = 240;
 }
 
+void setButtonClips()
+{
+    //Fly Away Button
+    clipButtons[0].x = 312;
+    clipButtons[0].y = 242;
+    clipButtons[0].w = 73;
+    clipButtons[0].h = 17;
+}
+
 void setDuckClips()
 {
     //Black Duck Flying - Diagonal Upper Left
@@ -288,6 +300,7 @@ void setClips()
     setBackgroundClips();
     setDogClips();
     setDuckClips();
+    setButtonClips();
 }
 
 //Constructor for the duck class, initializes all the member variables to be 0 values
@@ -328,6 +341,11 @@ bool Duck::getKilled()
 int Duck::getClicks()
 {
     return numClicks;
+}
+
+bool Duck::getDuckMissed()
+{
+    return duckMissed;
 }
 
 //Handle's all events related to the duck, basically determining if a duck is clicked on or not
@@ -423,13 +441,18 @@ void Duck::show()
         SDL_Delay(500);
         showFallingAnimation();
     }
+    else if (duckMissed == true)
+    {
+        applyImages(50, 20, button, screen, &clipButtons[0]);
+        SDL_Flip(screen);
+        showFlyingAwayAnimation();
+    }
     applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[currentFrame]);
     currentFrame++;
     if (killed == false && currentFrame > 5)
     {
         currentFrame = 0;
     }
-
 }
 
 void Duck::fixCollisionLR()
@@ -523,6 +546,30 @@ void Duck::showFallingAnimation()
             SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
         }
         
+    }
+}
+
+void Duck::showFlyingAwayAnimation()
+{
+    Timer fps;
+    int frame = 0;
+    int framesPerSecond = 5;
+    
+    while (dimensions.x >= 0 && dimensions.y + dimensions.h >= 0)
+    {
+        SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+        applyImages(0, 0, background, screen);
+        applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[frame]);
+        dimensions.y -= 10;
+        if (frame >= 3)
+        {
+            frame = 0;
+        }
+        frame++;
+        if (fps.getTimerTime() < 1000/framesPerSecond)
+        {
+            SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
+        }
     }
 }
 
@@ -700,7 +747,7 @@ int main(int argc, char** argv)
         ducksArray[duckCounter].show();
         SDL_Flip(screen);
         
-        if (ducksArray[duckCounter].getKilled() == true)
+        if (ducksArray[duckCounter].getKilled() == true || ducksArray[duckCounter].getDuckMissed() == true)
         {
             applyImages(0, 0, background, screen, &clipBackground[0]);
             SDL_Flip(screen);
