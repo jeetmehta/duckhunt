@@ -443,8 +443,6 @@ void Duck::show()
     }
     else if (duckMissed == true)
     {
-        applyImages(50, 20, button, screen, &clipButtons[0]);
-        SDL_Flip(screen);
         showFlyingAwayAnimation();
     }
     applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[currentFrame]);
@@ -553,14 +551,16 @@ void Duck::showFlyingAwayAnimation()
 {
     Timer fps;
     int frame = 0;
-    int framesPerSecond = 5;
+    int framesPerSecond = 10;
     
     while (dimensions.x >= 0 && dimensions.y + dimensions.h >= 0)
     {
         SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
         applyImages(0, 0, background, screen);
         applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[frame]);
+        applyImages(100, 40, button, screen, &clipButtons[0]);
         dimensions.y -= 10;
+        SDL_Flip(screen);
         if (frame >= 3)
         {
             frame = 0;
@@ -571,6 +571,7 @@ void Duck::showFlyingAwayAnimation()
             SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
         }
     }
+    SDL_Delay(500);
 }
 
 //Constructor for the dog class, initializes all the member variables to be 0 values
