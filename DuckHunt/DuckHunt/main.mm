@@ -370,6 +370,7 @@ bool Duck::handleEvents(int xClick, int yClick)
     return false;
 }
 
+//Moves the duck
 void Duck::move()
 {
     if (killed == false)
@@ -430,6 +431,7 @@ void Duck::move()
     }
 }
 
+//Shows the duck - Rendering function
 void Duck::show()
 {
     SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
@@ -453,6 +455,7 @@ void Duck::show()
     }
 }
 
+//Function which fixes collisions with the right and left walls/boundaries of the window
 void Duck::fixCollisionLR()
 {
     std::cout << status;
@@ -482,6 +485,7 @@ void Duck::fixCollisionLR()
     }
 }
 
+//Function which fixes collisions with the top and bottom walls/boundaries of the window
 void Duck::fixCollisionUD()
 {
     
@@ -512,6 +516,7 @@ void Duck::fixCollisionUD()
     }
 }
 
+//Animation - Duck falls down once its shot
 void Duck::showFallingAnimation()
 {
     Timer fps;
@@ -547,6 +552,7 @@ void Duck::showFallingAnimation()
     }
 }
 
+//Animation - Duck flies away on miss
 void Duck::showFlyingAwayAnimation()
 {
     Timer fps;
@@ -685,7 +691,7 @@ int main(int argc, char** argv)
     std::vector<Duck> ducksArray;
     int counter = 0;
     
-    
+    //Sets the attributes of 10 different ducks and pushes them to a array which holds all the ducks
     while (counter <= 10)
     {
         duckDimensions.x = rand() % 255;
@@ -717,10 +723,16 @@ int main(int argc, char** argv)
         //Events
         while (SDL_PollEvent(&event))
         {
+            //Start the timer
             fps.start();
             
-            //Function that handle's input for the duck should go here
             if (event.type == SDL_QUIT)
+            {
+                quit = true;
+            }
+            
+            //If the 10 ducks have been used
+            else if (duckCounter > 10)
             {
                 quit = true;
             }
@@ -734,11 +746,6 @@ int main(int argc, char** argv)
                    ducksArray[duckCounter].handleEvents(x, y);
                }
             }
-            
-            else if (duckCounter > 10)
-            {
-                quit = true;
-            }
         }
         
         //Logic
@@ -748,6 +755,7 @@ int main(int argc, char** argv)
         ducksArray[duckCounter].show();
         SDL_Flip(screen);
         
+        //If the duck has been killed, or 3 shots ended and the duck was missed
         if (ducksArray[duckCounter].getKilled() == true || ducksArray[duckCounter].getDuckMissed() == true)
         {
             applyImages(0, 0, background, screen, &clipBackground[0]);
@@ -755,6 +763,7 @@ int main(int argc, char** argv)
             duckCounter++;
         }
         
+        //Capping the frame rate, making sure it doesn't play too quickly
         if(fps.getTimerTime() < 1000 / FRAMES_PER_SECOND )
         {
             SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.getTimerTime());
