@@ -20,7 +20,7 @@
 const int screenHeight = 240;
 const int screenWidth = 256;
 const int screenBpp = 32;
-const int FRAMES_PER_SECOND = 5;
+const int FRAMES_PER_SECOND = 10;
 
 //Declaring the basic required surfaces/images
 SDL_Surface* screen = NULL;
@@ -358,32 +358,32 @@ void Duck::move()
     {
         if (status == goingUpRight)
         {
-            velocityX+= dimensions.w/10;
-            velocityY+= dimensions.h/10;
+            velocityX+= dimensions.w/17;
+            velocityY+= dimensions.h/17;
             
             dimensions.x += velocityX;
             dimensions.y -= velocityY;
         }
         else if(status == goingUpLeft)
         {
-            velocityX+= dimensions.w/10;
-            velocityY+= dimensions.h/10;
+            velocityX+= dimensions.w/17;
+            velocityY+= dimensions.h/17;
             
             dimensions.x -= velocityX;
             dimensions.y -= velocityY;
         }
         else if (status == goingDownRight)
         {
-            velocityX+= dimensions.w/10;
-            velocityY+= dimensions.h/10;
+            velocityX+= dimensions.w/17;
+            velocityY+= dimensions.h/17;
             
             dimensions.x += velocityX;
             dimensions.y += velocityY;
         }
         else if (status == goingDownLeft)
         {
-            velocityX+= dimensions.w/10;
-            velocityY+= dimensions.h/10;
+            velocityX+= dimensions.w/17;
+            velocityY+= dimensions.h/17;
             
             dimensions.x -= velocityX;
             dimensions.y += velocityY;
@@ -391,16 +391,24 @@ void Duck::move()
         
     }
     
-    if ((dimensions.x + dimensions.w >= screenWidth) || dimensions.x < 0)
+    if (((dimensions.x + dimensions.w) >= screenWidth || dimensions.x < 0))
     {
-        dimensions.x -= (velocityX + dimensions.w);
+        dimensions.x -= (velocityX + dimensions.w)/40;
+        std::cout << "Fix collision left/right is called"<<std::endl;
         fixCollisionLR();
     }
     
-    if (dimensions.y + dimensions.h >= duckAreaHeight|| dimensions.y < 0)
+    else if (((dimensions.y + dimensions.h) >= duckAreaHeight|| dimensions.y < 0))
     {
-        dimensions.y -= (velocityY + dimensions.h);
+        dimensions.y -= (velocityY + dimensions.h)/40;
+        std::cout << "Fix collision up/down is called"<<std::endl;
         fixCollisionUD();
+    }
+    
+    if (velocityX > 10 || velocityY > 10)
+    {
+        velocityX = 10;
+        velocityY = 10;
     }
 }
 
@@ -426,59 +434,60 @@ void Duck::show()
 
 void Duck::fixCollisionLR()
 {
-    std::cout << "Fix collision left/right is called"<<std::endl;
+    std::cout << status;
     if (status == goingDownLeft)
     {
         status = goingDownRight;
-        dimensions.x += dimensions.w/2;
-        dimensions.y -= dimensions.h/2;
+        dimensions.x += dimensions.w/35;
+        dimensions.y -= dimensions.h/35;
     }
     else if (status == goingDownRight)
     {
         status = goingDownLeft;
-        dimensions.x -= dimensions.w/2;
-        dimensions.y += dimensions.h/2;
+        dimensions.x -= dimensions.w/35;
+        dimensions.y += dimensions.h/35;
     }
     else if (status == goingUpLeft)
     {
         status = goingUpRight;
-        dimensions.x += dimensions.w/2;
-        dimensions.y -= dimensions.h/2;
+        dimensions.x += dimensions.w/35;
+        dimensions.y -= dimensions.h/35;
     }
     else if (status == goingUpRight)
     {
         status = goingUpLeft;
-        dimensions.x -= dimensions.w/2;
-        dimensions.y -= dimensions.h/2;
+        dimensions.x -= dimensions.w/35;
+        dimensions.y -= dimensions.h/35;
     }
 }
 
 void Duck::fixCollisionUD()
 {
-    std::cout << "Fix collision up/down is called"<<std::endl;
+    
+    std::cout << status;
     if (status == goingDownLeft)
     {
         status = goingUpLeft;
-        dimensions.x -= dimensions.w/2;
-        dimensions.y -= dimensions.h/2;
+        dimensions.x -= dimensions.w/35;
+        dimensions.y -= dimensions.h/35;
     }
     else if (status == goingDownRight)
     {
         status = goingUpRight;
-        dimensions.x += dimensions.w/2;
-        dimensions.y -= dimensions.h/2;
+        dimensions.x += dimensions.w/35;
+        dimensions.y -= dimensions.h/35;
     }
     else if (status == goingUpLeft)
     {
         status = goingDownLeft;
-        dimensions.x -= dimensions.w/2;
-        dimensions.y += dimensions.h/2;
+        dimensions.x -= dimensions.w/35;
+        dimensions.y += dimensions.h/35;
     }
     else if (status == goingUpRight)
     {
         status = goingDownRight;
-        dimensions.x += dimensions.w/2;
-        dimensions.y -= dimensions.h/2;
+        dimensions.x += dimensions.w/35;
+        dimensions.y -= dimensions.h/35;
     }
 }
 
@@ -628,14 +637,15 @@ int main(int argc, char** argv)
     std::vector<Duck> ducksArray;
     int counter = 0;
     
+    
     while (counter <= 10)
     {
-        duckDimensions.x = rand() % 222;
-        duckDimensions.y = rand() % 116;
+        duckDimensions.x = rand() % 255;
+        duckDimensions.y = rand() % 149;
         duckDimensions.w = 35;
         duckDimensions.h = 35;
         
-        Duck duck = Duck(duckDimensions, 0, 0, 0, false, false, 0, goingUpRight);
+        Duck duck = Duck(duckDimensions, 0, 0, 0, false, false, 0, goingDownLeft);
         ducksArray.push_back(duck);
         counter++;
     }
