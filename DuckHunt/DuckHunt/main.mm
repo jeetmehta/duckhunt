@@ -15,7 +15,6 @@
 #include "duck.cpp"
 #include <vector>
 
-
 //Screen Size
 const int screenHeight = 240;
 const int screenWidth = 256;

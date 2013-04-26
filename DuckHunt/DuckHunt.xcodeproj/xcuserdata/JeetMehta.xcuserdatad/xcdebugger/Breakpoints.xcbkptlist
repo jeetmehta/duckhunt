@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "DuckHunt/main.mm"
-         timestampString = "388681567.589991"
+         timestampString = "388699463.37723"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "502"
-         endingLineNumber = "502"
+         startingLineNumber = "501"
+         endingLineNumber = "501"
          landmarkName = "Duck::fixCollisionUD()"
          landmarkType = "5">
       </FileBreakpoint>
