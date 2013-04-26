@@ -726,17 +726,15 @@ void Dog::goBackDown()
     Timer fps;
     int framesPerSecond = 10;
     int animationOver = false;
-    xOffset = 110;
-    yOffset = 150;
     
     while (animationOver == false)
     {
-        while (yOffset > 153)
+        while (yOffset < 155)
         {
             SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
             applyImages(0, 0, background, screen, &clipBackground[0]);
             applyImages(xOffset, yOffset, dog, screen, &clipDog[10]);
-            applyImages(0, yOffset, backgroundGrass, screen, &clipBackground[1]);
+            applyImages(0, 153, backgroundGrass, screen, &clipBackground[1]);
             SDL_Flip(screen);
             yOffset += 3;
             frame++;
