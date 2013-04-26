@@ -28,6 +28,7 @@ SDL_Surface* background = NULL;
 SDL_Surface* dog = NULL;
 SDL_Surface* duck = NULL;
 SDL_Surface* button = NULL;
+SDL_Surface* backgroundGrass = NULL;
 
 //Text Color
 SDL_Color textColor;
@@ -36,7 +37,7 @@ SDL_Color textColor;
 SDL_Event event;
 
 //Sprite Clipping Rects - Used to store the various relevant images within the spritesheet
-SDL_Rect clipBackground[1];
+SDL_Rect clipBackground[2];
 SDL_Rect clipDog[11];
 SDL_Rect clipDuck[10];
 SDL_Rect clipButtons[10];
@@ -116,6 +117,7 @@ bool loadFiles()
     dog = loadImage("generalrips.gif", true, 163, 239, 165);
     duck = loadImage("generalrips.gif", true, 163, 239, 165);
     button = loadImage("generalrips.gif", true, 163, 239, 165);
+    backgroundGrass = loadImage("generalrips.gif", false, 0, 0, 0);
     
     if (dog == NULL)
     {
@@ -230,6 +232,12 @@ void setBackgroundClips()
     clipBackground[0].y = 0;
     clipBackground[0].w = 256;
     clipBackground[0].h = 240;
+    
+    //Just the grass in the background
+    clipBackground[1].x = 0;
+    clipBackground[1].y = 153;
+    clipBackground[1].w = 256;
+    clipBackground[1].h = 240;
 }
 
 void setButtonClips()
@@ -446,6 +454,7 @@ void Duck::show()
     else if (duckMissed == true)
     {
         showFlyingAwayAnimation();
+        SDL_Delay(1000);
     }
     applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[currentFrame]);
     currentFrame++;
@@ -583,7 +592,8 @@ void Duck::showFlyingAwayAnimation()
 //Constructor for the dog class, initializes all the member variables to be 0 values
 Dog::Dog()
 {
-    offset = 0;
+    xOffset = 0;
+    yOffset = 0;
     velocity = 0;
     currentFrame = 0;
 }
@@ -603,14 +613,14 @@ void Dog::moveAhead()
             fps.start();
             SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
             applyImages(0, 0, background, screen, &clipBackground[0]);
-            applyImages(offset, 138, dog, screen, &clipDog[frame]);
+            applyImages(xOffset, 138, dog, screen, &clipDog[frame]);
             frame++;
             SDL_Flip(screen);
             if (fps.getTimerTime() < 1000/framesPerSecond)
             {
                 SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
             }
-            offset+=4;
+            xOffset+=4;
             fps.stop();
         }
         numTimes++;
@@ -632,7 +642,7 @@ void Dog::sniff()
             fps.start();
             SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
             applyImages(0, 0, background, screen, &clipBackground[0]);
-            applyImages(offset, 138, dog, screen, &clipDog[frame]);
+            applyImages(xOffset, 138, dog, screen, &clipDog[frame]);
             frame++;
             SDL_Flip(screen);
             if (fps.getTimerTime() < 1000/framesPerSecond)
@@ -657,14 +667,14 @@ void Dog::jumpIntoField()
         fps.start();
         SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
         applyImages(0, 0, background, screen, &clipBackground[0]);
-        applyImages(offset, 138, dog, screen, &clipDog[frame]);
+        applyImages(xOffset, 138, dog, screen, &clipDog[frame]);
         frame++;
         SDL_Flip(screen);
         if (fps.getTimerTime() < 1000/framesPerSecond)
         {
             SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
         }
-        offset+=4;
+        xOffset+=4;
         fps.stop();
     }
 }
@@ -677,6 +687,96 @@ void Dog::showOpeningAnimation()
     moveAhead();
     sniff();
     jumpIntoField();
+}
+
+void Dog::comeUp()
+{
+    int frame = 0;
+    Timer fps;
+    int framesPerSecond = 10;
+    int animationOver = false;
+    xOffset = 110;
+    yOffset = 150;
+    
+    while (animationOver == false)
+    {
+        while (yOffset > 115)
+        {
+            SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+            applyImages(0, 0, background, screen, &clipBackground[0]);
+            applyImages(xOffset, yOffset, dog, screen, &clipDog[10]);
+            applyImages(0, 153, backgroundGrass, screen, &clipBackground[1]);
+            SDL_Flip(screen);
+            yOffset -= 3;
+            frame++;
+            
+            if (fps.getTimerTime() < 1000/framesPerSecond)
+            {
+                SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
+            }
+            fps.stop();
+        }
+        animationOver = true;
+    }
+}
+
+void Dog::goBackDown()
+{
+    int frame = 0;
+    Timer fps;
+    int framesPerSecond = 10;
+    int animationOver = false;
+    xOffset = 110;
+    yOffset = 150;
+    
+    while (animationOver == false)
+    {
+        while (yOffset > 153)
+        {
+            SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+            applyImages(0, 0, background, screen, &clipBackground[0]);
+            applyImages(xOffset, yOffset, dog, screen, &clipDog[10]);
+            applyImages(0, yOffset, backgroundGrass, screen, &clipBackground[1]);
+            SDL_Flip(screen);
+            yOffset += 3;
+            frame++;
+            
+            if (fps.getTimerTime() < 1000/framesPerSecond)
+            {
+                SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
+            }
+            fps.stop();
+        }
+        animationOver = true;
+    }
+}
+
+void Dog::laugh()
+{
+    Timer fps;
+    int framesPerSecond = 5;
+    int numTimes = 0;
+    
+    while (numTimes < 4)
+    {
+        int frame = 10;
+        while (frame <= 11)
+        {
+            fps.start();
+            SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+            applyImages(0, 0, background, screen, &clipBackground[0]);
+            applyImages(xOffset, yOffset, dog, screen, &clipDog[frame]);
+            applyImages(0, 153, backgroundGrass, screen, &clipBackground[1]);
+            frame++;
+            SDL_Flip(screen);
+            if (fps.getTimerTime() < 1000/framesPerSecond)
+            {
+                SDL_Delay((1000/framesPerSecond) - fps.getTimerTime());
+            }
+            fps.stop();
+        }
+        numTimes++;
+    }
 }
 
 //Main function
@@ -758,6 +858,13 @@ int main(int argc, char** argv)
         //If the duck has been killed, or 3 shots ended and the duck was missed
         if (ducksArray[duckCounter].getKilled() == true || ducksArray[duckCounter].getDuckMissed() == true)
         {
+            if (ducksArray[duckCounter].getDuckMissed() == true)
+            {
+                huntingDog.comeUp();
+                huntingDog.laugh();
+                huntingDog.goBackDown();
+                SDL_Delay(1000);
+            }
             applyImages(0, 0, background, screen, &clipBackground[0]);
             SDL_Flip(screen);
             duckCounter++;

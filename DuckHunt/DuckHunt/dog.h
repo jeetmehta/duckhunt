@@ -14,7 +14,8 @@
 class Dog
 {
 private:
-    int offset;
+    int xOffset;
+    int yOffset;
     int velocity;
     int currentFrame;
     
@@ -25,6 +26,11 @@ public:
     void moveAhead();
     void sniff();
     void jumpIntoField();
+    void showLaughingAnimation();
+    void showDuckHoldingAnimation();
+    void comeUp();
+    void goBackDown();
+    void laugh();
 };
 
 #endif
