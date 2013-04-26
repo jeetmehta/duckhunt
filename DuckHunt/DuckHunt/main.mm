@@ -531,12 +531,15 @@ void Duck::showFallingAnimation()
     Timer fps;
     int frame = 7;
     int framesPerSecond = 10;
-    while (dimensions.y <= duckAreaHeight)
+    while (dimensions.y <= 155)
     {
-        if (dimensions.h + dimensions.y > duckAreaHeight)
+       
+        if (dimensions.h + dimensions.y >= 155)
         {
+            SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
+            applyImages(0, 0, background, screen, &clipBackground[0]);
             applyImages(dimensions.x, dimensions.y, duck, screen, &clipDuck[frame]);
-            applyImages(0, 0, background, screen);
+            applyImages(0, 153, backgroundGrass, screen, &clipBackground[1]);
             SDL_Flip(screen);
         }
         else
@@ -559,6 +562,7 @@ void Duck::showFallingAnimation()
         }
         
     }
+    SDL_Delay(500);
 }
 
 //Animation - Duck flies away on miss
@@ -786,7 +790,6 @@ void Dog::laugh()
         numTimes++;
     }
 }
-
 //Main function
 int main(int argc, char** argv)
 {
