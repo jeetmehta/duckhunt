@@ -598,6 +598,16 @@ Dog::Dog()
     currentFrame = 0;
 }
 
+int Dog::getXOffset()
+{
+    return xOffset;
+}
+
+int Dog::getYOffset()
+{
+    return yOffset;
+}
+
 //Animation - Moves the dog ahead
 void Dog::moveAhead()
 {
@@ -689,7 +699,7 @@ void Dog::showOpeningAnimation()
     jumpIntoField();
 }
 
-void Dog::comeUp()
+void Dog::comeUp(int spriteNumber)
 {
     int frame = 0;
     Timer fps;
@@ -704,7 +714,7 @@ void Dog::comeUp()
         {
             SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
             applyImages(0, 0, background, screen, &clipBackground[0]);
-            applyImages(xOffset, yOffset, dog, screen, &clipDog[10]);
+            applyImages(xOffset, yOffset, dog, screen, &clipDog[spriteNumber]);
             applyImages(0, 153, backgroundGrass, screen, &clipBackground[1]);
             SDL_Flip(screen);
             yOffset -= 3;
@@ -720,7 +730,7 @@ void Dog::comeUp()
     }
 }
 
-void Dog::goBackDown()
+void Dog::goBackDown(int spriteNumber)
 {
     int frame = 0;
     Timer fps;
@@ -733,7 +743,7 @@ void Dog::goBackDown()
         {
             SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
             applyImages(0, 0, background, screen, &clipBackground[0]);
-            applyImages(xOffset, yOffset, dog, screen, &clipDog[10]);
+            applyImages(xOffset, yOffset, dog, screen, &clipDog[spriteNumber]);
             applyImages(0, 153, backgroundGrass, screen, &clipBackground[1]);
             SDL_Flip(screen);
             yOffset += 3;
@@ -861,11 +871,19 @@ int main(int argc, char** argv)
             //If the duck was missed
             if (ducksArray[duckCounter].getDuckMissed() == true)
             {
-                huntingDog.comeUp();
+                huntingDog.comeUp(10);
                 huntingDog.laugh();
-                huntingDog.goBackDown();
+                huntingDog.goBackDown(10);
                 SDL_Delay(1000);
             }
+            else if (ducksArray[duckCounter].getKilled() == true)
+            {
+                huntingDog.comeUp(8);
+                SDL_Delay(800);
+                huntingDog.goBackDown(8);
+                SDL_Delay(1000);
+            }
+            
             applyImages(0, 0, background, screen, &clipBackground[0]);
             SDL_Flip(screen);
             duckCounter++;

@@ -26,11 +26,11 @@ public:
     void moveAhead();
     void sniff();
     void jumpIntoField();
-    void showLaughingAnimation();
-    void showDuckHoldingAnimation();
-    void comeUp();
-    void goBackDown();
+    void comeUp(int spriteNum);
+    void goBackDown(int spriteNum);
     void laugh();
+    int getXOffset();
+    int getYOffset();
 };
 
 #endif
