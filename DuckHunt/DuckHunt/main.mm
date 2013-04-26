@@ -835,6 +835,7 @@ int main(int argc, char** argv)
                 quit = true;
             }
 
+            //Process Events
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
                if (event.button.button == SDL_BUTTON_LEFT)
@@ -842,6 +843,7 @@ int main(int argc, char** argv)
                    int x = event.button.x;
                    int y = event.button.y;
                    ducksArray[duckCounter].handleEvents(x, y);
+                   SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
                }
             }
         }
@@ -856,6 +858,7 @@ int main(int argc, char** argv)
         //If the duck has been killed, or 3 shots ended and the duck was missed
         if (ducksArray[duckCounter].getKilled() == true || ducksArray[duckCounter].getDuckMissed() == true)
         {
+            //If the duck was missed
             if (ducksArray[duckCounter].getDuckMissed() == true)
             {
                 huntingDog.comeUp();
@@ -867,6 +870,8 @@ int main(int argc, char** argv)
             SDL_Flip(screen);
             duckCounter++;
         }
+        
+        SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_ENABLE);
         
         //Capping the frame rate, making sure it doesn't play too quickly
         if(fps.getTimerTime() < 1000 / FRAMES_PER_SECOND )
