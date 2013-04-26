@@ -1,0 +1,32 @@
+char tp_version[] = "cpp = 1.0";
+char textureName[] = "{{texture.fullName}}";
+int  textureWidth  = {{texture.size.width}};
+int  textureHeight = {{texture.size.height}};
+struct  sSPRITE_INFO
+{
+ char name[32];
+ bool rotation;
+ float texturePoints[4];
+ int size[2];
+ int offset[2];
+ int originalSize[2];
+};
+{% for sprite in allSprites %}
+sSPRITE_INFO  {{sprite.trimmedName}} = {
+  "{{sprite.trimmedName}}", // name
+ {{sprite.rotated}}, // rotation
+ { {{sprite.frameRect.x}}, {{sprite.frameRect.y}}, {{sprite.frameRect.x|add:sprite.frameRect.width}}, {{sprite.frameRect.y|add:sprite.frameRect.height}} }, // TexturePoints
+ { {{sprite.frameRectWithoutRotation.width}}, {{sprite.frameRectWithoutRotation.height}} }, // size
+    { {{sprite.cornerOffset.x}}, {{sprite.cornerOffset.y}} }, // corner offset, relative to original sprite
+    { {{sprite.untrimmedSize.width}}, {{sprite.untrimmedSize.height}} }, // original sprite width
+};
+{% endfor %}
+static const sSPRITE_INFO *{{texture.trimmedName}}[] = 
+{ {% for sprite in allSprites %}
+  &{{sprite.trimmedName}},{% endfor %}
+};
+// Enumeration for defining the image indices for the lookup table above
+enum 
+{ {% for sprite in allSprites %}
+  SA_{{sprite.trimmedName}},{% endfor %}
+};

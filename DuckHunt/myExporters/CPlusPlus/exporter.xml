@@ -1,0 +1,37 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>CPlusPlus</name>
+    <!-- display name of the exporter for the combo box -->
+    <displayName>C Plus Plus</displayName>
+    <!-- description of the exporter -->
+    <description>C++ Exporter</description>
+    <!-- exporter version -->
+    <version>1.0</version>
+ 
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>cplusplus</name>
+            <!-- human readable name (for GUI) -->
+            <displayName>cplusplus Texture</displayName>
+            <!-- file extension for the file -->
+            <fileExtension>cpp</fileExtension>
+            <!-- name of the template file -->
+            <template>cplusplus.txt</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>true</supportsRotation>
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+    <!-- supports npot sizes -->
+    <supportsNPOT>false</supportsNPOT>
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+</exporter>
