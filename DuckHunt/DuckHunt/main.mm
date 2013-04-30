@@ -814,7 +814,6 @@ int main(int argc, char** argv)
     bool quit = false;
     Dog huntingDog;
     Timer fps;
-    Timer duckMissed;
     SDL_Rect duckDimensions;
     int duckCounter = 0;
     std::vector<Duck> ducksArray;
@@ -860,7 +859,6 @@ int main(int argc, char** argv)
         {
             //Start the timer
             fps.start();
-            duckMissed.start();
             
             if (event.type == SDL_QUIT)
             {
@@ -903,7 +901,6 @@ int main(int argc, char** argv)
                 huntingDog.laugh();
                 huntingDog.goBackDown(10);
                 SDL_Delay(1000);
-                duckMissed.stop();
             }
             
             else if (ducksArray[duckCounter].getKilled() == true)
@@ -912,7 +909,6 @@ int main(int argc, char** argv)
                 SDL_Delay(800);
                 huntingDog.goBackDown(8);
                 SDL_Delay(1000);
-                duckMissed.stop();
             }
             
             applyImages(0, 0, background, screen, &clipBackground[0]);
