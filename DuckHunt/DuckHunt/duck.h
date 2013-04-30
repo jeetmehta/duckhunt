@@ -27,7 +27,7 @@ private:
 public:
     Duck();
     Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck, int numberClicks, int status);
-    bool handleEvents(int xCoodClick, int yCoordClick);
+    bool handleEvents(int xCoodClick, int yCoordClick, bool duckTimeOut);
     void show();
     void move();
     void showFallingAnimation();
@@ -38,6 +38,7 @@ public:
     void fixCollisionUD();
     void showFlyingAwayAnimation();
     bool getDuckMissed();
+    void setDuckMissed(bool missedTheDuck);
 };
 
 

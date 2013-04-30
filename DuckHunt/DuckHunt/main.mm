@@ -50,6 +50,7 @@ const int goingUpRight = 0;
 const int goingUpLeft = 1;
 const int goingDownRight = 2;
 const int goingDownLeft = 3;
+Timer duckTimeout;
 
 //Initialization function - initializes all necessary subsystems and makes them available for use
 bool init()
@@ -359,23 +360,31 @@ bool Duck::getDuckMissed()
     return duckMissed;
 }
 
+//Mutator - sets the value of whether the duck was missed or not
+void Duck::setDuckMissed(bool missed)
+{
+    duckMissed = missed;
+}
+
 //Handle's all events related to the duck, basically determining if a duck is clicked on or not
-bool Duck::handleEvents(int xClick, int yClick)
+bool Duck::handleEvents(int xClick, int yClick, bool duckTimedOut)
 {
     numClicks++;
     std::cout << numClicks;
-    if ((xClick > dimensions.x && xClick < (dimensions.x + dimensions.w)) && (yClick > dimensions.y && yClick < (dimensions.y + dimensions.h)) && numClicks <= 3)
+    if (duckTimedOut == false && (xClick > dimensions.x && xClick < (dimensions.x + dimensions.w)) && (yClick > dimensions.y && yClick < (dimensions.y + dimensions.h)) && numClicks <= 3)
     {
         std::cout << "Duck was killed";
         killed = true;
         duckMissed = false;
+        duckTimeout.stop();
         return true;
     }
-    else if (numClicks >= 3 && killed == false)
+    else if ((numClicks >= 3 && killed == false) || duckTimedOut == true)
     {
         duckMissed = true;
         killed = false;
         std::cout << "3 shots are finished";
+        duckTimeout.stop();
     }
     
     return false;
@@ -805,6 +814,7 @@ int main(int argc, char** argv)
     bool quit = false;
     Dog huntingDog;
     Timer fps;
+    Timer duckMissed;
     SDL_Rect duckDimensions;
     int duckCounter = 0;
     std::vector<Duck> ducksArray;
@@ -839,11 +849,18 @@ int main(int argc, char** argv)
     //Game Loop
     while (quit == false)
     {
+        duckTimeout.start();
+        if (duckTimeout.getTimerTime() >= 5000)
+        {
+            ducksArray[duckCounter].handleEvents(0, 0, true);
+        }
+
         //Events
         while (SDL_PollEvent(&event))
         {
             //Start the timer
             fps.start();
+            duckMissed.start();
             
             if (event.type == SDL_QUIT)
             {
@@ -855,7 +872,7 @@ int main(int argc, char** argv)
             {
                 quit = true;
             }
-
+            
             //Process Events
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
@@ -863,7 +880,7 @@ int main(int argc, char** argv)
                {
                    int x = event.button.x;
                    int y = event.button.y;
-                   ducksArray[duckCounter].handleEvents(x, y);
+                   ducksArray[duckCounter].handleEvents(x, y, false);
                    SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
                }
             }
@@ -886,13 +903,16 @@ int main(int argc, char** argv)
                 huntingDog.laugh();
                 huntingDog.goBackDown(10);
                 SDL_Delay(1000);
+                duckMissed.stop();
             }
+            
             else if (ducksArray[duckCounter].getKilled() == true)
             {
                 huntingDog.comeUp(8);
                 SDL_Delay(800);
                 huntingDog.goBackDown(8);
                 SDL_Delay(1000);
+                duckMissed.stop();
             }
             
             applyImages(0, 0, background, screen, &clipBackground[0]);
