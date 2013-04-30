@@ -310,7 +310,7 @@ void setClips()
     setButtonClips();
 }
 
-//Constructor for the duck class, initializes all the member variables to be 0 values
+//Default Constructor for the duck class, initializes all the member variables to be 0 values
 Duck::Duck()
 {
     velocityX = 0;
@@ -325,6 +325,7 @@ Duck::Duck()
     duckMissed = false;
 }
 
+//Normal Constructor, initializes all the member varibles to the inputted values
 Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, bool missedTheDuck, int numberClicks, int speedStatus)
 {
     dimensions.x = attributes.x;
@@ -340,16 +341,19 @@ Duck::Duck(SDL_Rect attributes, int xVelo, int yVelo, int frameNow, bool dead, b
     status = speedStatus;
 }
 
+//Accessor - returns whether the duck is killed or not
 bool Duck::getKilled()
 {
     return killed;
 }
 
+//Accessor - returns the number of times the duck has been clicked
 int Duck::getClicks()
 {
     return numClicks;
 }
 
+//Accessor - returns whether the duck was missed or not
 bool Duck::getDuckMissed()
 {
     return duckMissed;
@@ -419,14 +423,16 @@ void Duck::move()
     
     if (((dimensions.x + dimensions.w) >= screenWidth || dimensions.x < 0))
     {
-        dimensions.x -= (velocityX + dimensions.w)/40;
+        //dimensions.x -= (velocityX + dimensions.w)/40;
+        std::cout<<status;
         std::cout << "Fix collision left/right is called"<<std::endl;
         fixCollisionLR();
     }
     
     else if (((dimensions.y + dimensions.h) >= duckAreaHeight|| dimensions.y < 0))
     {
-        dimensions.y -= (velocityY + dimensions.h)/40;
+        //dimensions.y -= (velocityY + dimensions.h)/40;
+        std::cout<<status;
         std::cout << "Fix collision up/down is called"<<std::endl;
         fixCollisionUD();
     }
@@ -466,61 +472,58 @@ void Duck::show()
 //Function which fixes collisions with the right and left walls/boundaries of the window
 void Duck::fixCollisionLR()
 {
-    std::cout << status;
     if (status == goingDownLeft)
     {
         status = goingDownRight;
-        dimensions.x += dimensions.w/35;
-        dimensions.y -= dimensions.h/35;
+        dimensions.x += velocityX;
+        dimensions.y += velocityY;
     }
     else if (status == goingDownRight)
     {
         status = goingDownLeft;
-        dimensions.x -= dimensions.w/35;
-        dimensions.y += dimensions.h/35;
+        dimensions.x -= velocityX;
+        dimensions.y += velocityY;
     }
     else if (status == goingUpLeft)
     {
         status = goingUpRight;
-        dimensions.x += dimensions.w/35;
-        dimensions.y -= dimensions.h/35;
+        dimensions.x += velocityX;
+        dimensions.y -= velocityY;
     }
     else if (status == goingUpRight)
     {
         status = goingUpLeft;
-        dimensions.x -= dimensions.w/35;
-        dimensions.y -= dimensions.h/35;
+        dimensions.x -= velocityX;
+        dimensions.y -= velocityY;
     }
 }
 
 //Function which fixes collisions with the top and bottom walls/boundaries of the window
 void Duck::fixCollisionUD()
 {
-    
-    std::cout << status;
     if (status == goingDownLeft)
     {
         status = goingUpLeft;
-        dimensions.x -= dimensions.w/35;
-        dimensions.y -= dimensions.h/35;
+        dimensions.x -= velocityX;
+        dimensions.y -= velocityY;
     }
     else if (status == goingDownRight)
     {
         status = goingUpRight;
-        dimensions.x += dimensions.w/35;
-        dimensions.y -= dimensions.h/35;
+        dimensions.x += velocityX;
+        dimensions.y -= velocityY;
     }
     else if (status == goingUpLeft)
     {
         status = goingDownLeft;
-        dimensions.x -= dimensions.w/35;
-        dimensions.y += dimensions.h/35;
+        dimensions.x -= velocityX;
+        dimensions.y += velocityY;
     }
     else if (status == goingUpRight)
     {
         status = goingDownRight;
-        dimensions.x += dimensions.w/35;
-        dimensions.y -= dimensions.h/35;
+        dimensions.x += velocityX;
+        dimensions.y += velocityY;
     }
 }
 
@@ -601,11 +604,13 @@ Dog::Dog()
     currentFrame = 0;
 }
 
+//Accessor - returns x co-ordinate of dog
 int Dog::getXOffset()
 {
     return xOffset;
 }
 
+//Accessor - returns y co-ordinate of dog
 int Dog::getYOffset()
 {
     return yOffset;
@@ -702,6 +707,7 @@ void Dog::showOpeningAnimation()
     jumpIntoField();
 }
 
+//Animation - dog comes up from behind the field
 void Dog::comeUp(int spriteNumber)
 {
     int frame = 0;
@@ -733,6 +739,7 @@ void Dog::comeUp(int spriteNumber)
     }
 }
 
+//Animation - Dog goes down back into the field
 void Dog::goBackDown(int spriteNumber)
 {
     int frame = 0;
@@ -762,6 +769,7 @@ void Dog::goBackDown(int spriteNumber)
     }
 }
 
+//Animation - Dog laughs at the user
 void Dog::laugh()
 {
     Timer fps;
@@ -789,6 +797,7 @@ void Dog::laugh()
         numTimes++;
     }
 }
+
 //Main function
 int main(int argc, char** argv)
 {
@@ -804,8 +813,8 @@ int main(int argc, char** argv)
     //Sets the attributes of 10 different ducks and pushes them to a array which holds all the ducks
     while (counter <= 10)
     {
-        duckDimensions.x = rand() % 255;
-        duckDimensions.y = rand() % 149;
+        duckDimensions.x = rand() % 210;
+        duckDimensions.y = rand() % 110;
         duckDimensions.w = 35;
         duckDimensions.h = 35;
         
