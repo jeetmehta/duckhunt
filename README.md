@@ -16,4 +16,7 @@ The rules and the way in which the game is supposed to play can be read <a href 
 
 
 <h3><b>Resources</h3></b>
-
+  <ul>
+    <li>The sprites for the game can all be found <a href = "http://spriters-resource.com">here</a>.</li>
+    <li>Gimp was used to edit the images (for things like removing the background, creating the dialog etc)</li>
+  </ul>
