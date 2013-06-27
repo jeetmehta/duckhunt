@@ -2,7 +2,7 @@ Duck Hunt
 ========
 
 <h3><b>Description</h3></b>
-<b>Note:</b> j4mehta is another GitHub account which I had while I was working at Kik Interactive during a co-op term. I have transferred the repositories for the personal projects which I worked on during the time I was there to this new account, which explains why the account activity for jeetmehta seems less in comparison to the amount of work shown.<br>
+<b>Note</b>: j4mehta is another GitHub account which I had while I was working at Kik Interactive during a co-op term. I have transferred the repositories for the personal projects which I worked on during the time I was there to this new account, which explains why the account activity for jeetmehta seems less in comparison to the amount of work shown.<br>
 
 Re-creating the popular Nintendo NES game Duck Hunt, using C++ and the SDL API, will give me a lot of practice with animation, collision detection etc. Second project with SDL Game development, using tutorials at <a href = "http://www.lazyfoo.net">Lazy Foo</a> for reference.
 
